@@ -71,7 +71,9 @@
 
     <!-- Other content here -->
     {% if request.user.is_authenticated and not request.user.is_superuser %}
-      <a href="{% url 'sell-vehicle' %}" class="btn btn-primary">Sell Vehicle</a>
+      {% if request.user.userprofile.user_type == 'seller' %}
+        <a href="{% url 'sell-vehicle' %}" class="btn btn-primary">Sell Vehicle</a>
+      {% endif %}
     {% endif %}
   </body>
 </html>

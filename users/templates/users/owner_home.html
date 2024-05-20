@@ -1,14 +1,35 @@
-<!-- users/templates/users/owner_home.html -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Owner Home Page</title>
-    <!-- Include any necessary CSS files or styles -->
+    <!-- Include necessary CSS files or stylesheets -->
     <style>
-      /* Your styles here */
+      /* Your custom styles for cards */
+      .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        width: 300px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      }
+      .card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+      .card-body {
+        padding: 10px;
+      }
+      .star-ratings {
+        color: orange;
+      }
     </style>
   </head>
   <body>
@@ -23,7 +44,7 @@
       <div class="card-container">
         {% for listing in approved_listings %}
           <div class="card">
-            <img src="{{ listing.product_image.url }}" alt="Vehicle Image" style="max-width: 100px; max-height: 100px;" />
+            <img src="{{ listing.product_image.url }}" alt="Vehicle Image" />
             <div class="card-body">
               <h3>{{ listing.brand }} {{ listing.model }} - {{ listing.year }}</h3>
               <p>

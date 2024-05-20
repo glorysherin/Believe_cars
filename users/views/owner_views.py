@@ -103,7 +103,7 @@ def reject_listing(request, listing_id):
     listing = get_object_or_404(VehicleListing, id=listing_id)
     if request.method == 'POST':
         listing.is_approved = False
-        listing.save()
+        listing.delete()
         # Optionally, you can add a success message here
         return redirect('view-approvals')
     return render(request, 'users/reject_listing.html', {'listing': listing})
