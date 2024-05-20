@@ -4,10 +4,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from users.forms import UserRegisterForm, UserLoginForm,VehicleListingForm
-from users.models import UserProfile
+from users.models import UserProfile,VehicleListing
 
 def home(request):
-    return render(request, 'users/home.html')
+    approved_listings = VehicleListing.objects.filter(is_approved=True)
+    context = {
+        'approved_listings': approved_listings
+    }
+    return render(request, 'users/home.html', context)
 
 def user_register(request):
     if request.method == 'POST':
@@ -42,10 +46,12 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('home')
-
 def owner_home(request):
-    # Logic specific to owner/superuser home page
-    return render(request, 'users/owner_home.html')
+    approved_listings = VehicleListing.objects.filter(is_approved=True)
+    context = {
+        'approved_listings': approved_listings
+    }
+    return render(request, 'users/owner_home.html', context)
 
 @login_required
 def sell_vehicle(request):

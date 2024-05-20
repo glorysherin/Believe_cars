@@ -18,5 +18,35 @@
       <a href="{% url 'extract-user-details' %}" class="btn btn-primary">Extract User Details</a>
       <a href="{% url 'view-approvals' %}" class="btn btn-secondary">View Approvals</a>
     </div>
+    <div class="container">
+      <h2>Approved Vehicle Listings</h2>
+      <div class="card-container">
+        {% for listing in approved_listings %}
+          <div class="card">
+            <img src="{{ listing.product_image.url }}" alt="Vehicle Image" style="max-width: 100px; max-height: 100px;" />
+            <div class="card-body">
+              <h3>{{ listing.brand }} {{ listing.model }} - {{ listing.year }}</h3>
+              <p>
+                <strong>Location:</strong> {{ listing.location }}
+              </p>
+              <p>
+                <strong>Kms Driven:</strong> {{ listing.kms_driven }}
+              </p>
+              <p>
+                <strong>Fuel Type:</strong> {{ listing.fuel_type }}
+              </p>
+              <p>
+                <strong>Pitching Price:</strong> {{ listing.pitching_price }}
+              </p>
+              {% if listing.star_rating %}
+                <p>
+                  <strong>Owner Rating:</strong> {{ listing.star_rating }} / 5
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
   </body>
 </html>
