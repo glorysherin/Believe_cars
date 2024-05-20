@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Home Page</title>
+    <!-- Include necessary CSS files or stylesheets -->
+    <style>
+      /* Your custom styles for cards */
+      .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        margin: 10px;
+        width: 300px;
+        float: left;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      }
+      .card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+      .card-content {
+        padding: 10px;
+      }
+      .star-ratings {
+        color: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Welcome to the Home Page</h2>
+      <h1>Welcome to Believe Cars</h1>
+      <p>This is the home page of the Believe Cars website.</p>
+
+      <!-- Display approved vehicle listings as cards -->
+      <div class="cards-container">
+        {% for listing in approved_listings %}
+          <div class="card">
+            <img src="{{ listing.product_image.url }}" alt="Product Image" />
+            <div class="card-content">
+              <h3>{{ listing.brand }} {{ listing.model }}</h3>
+              <p>
+                <strong>Year:</strong> {{ listing.year }}
+              </p>
+              <p>
+                <strong>Kms Driven:</strong> {{ listing.kms_driven }}
+              </p>
+              <p>
+                <strong>Fuel Type:</strong> {{ listing.fuel_type }}
+              </p>
+              <p>
+                <strong>Location:</strong> {{ listing.location }}
+              </p>
+              <p>
+                <strong>Pitching Price:</strong> {{ listing.pitching_price }}
+              </p>
+              {% if listing.star_rating %}
+                <p>
+                  <strong>Rating:</strong>
+                  {% for i in 'x'|rjust:listing.star_rating %}
+                    <span class="star-ratings">★</span>
+                  {% endfor %}
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Other content here -->
+    {% if request.user.is_authenticated and not request.user.is_superuser %}
+      <a href="{% url 'sell-vehicle' %}" class="btn btn-primary">Sell Vehicle</a>
+    {% endif %}
+  </body>
+</html>

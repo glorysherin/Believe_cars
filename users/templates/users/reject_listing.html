@@ -1,0 +1,25 @@
+<!-- users/templates/users/reject_listing.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reject Listing</title>
+    <!-- Include any necessary CSS files or styles -->
+    <style>
+      /* Your styles here */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Reject Listing</h2>
+      <h3>{{ listing.brand }} {{ listing.model }} - {{ listing.year }}</h3>
+      <p>Are you sure you want to reject this listing?</p>
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit">Reject</button>
+      </form>
+    </div>
+  </body>
+</html>

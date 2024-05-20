@@ -1,0 +1,24 @@
+<!-- users/templates/users/sell_vehicle.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sell Vehicle</title>
+    <!-- Include any necessary CSS files or styles -->
+    <style>
+      /* Your styles here */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Sell Your Vehicle</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Submit for Approval</button>
+      </form>
+    </div>
+  </body>
+</html>

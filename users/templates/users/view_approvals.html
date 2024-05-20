@@ -1,0 +1,54 @@
+<!-- users/templates/users/view_approvals.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View Approvals</title>
+    <!-- Include any necessary CSS files or styles -->
+    <style>
+      /* Your styles here */
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Pending Approvals</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Year</th>
+            <th>Kms Driven</th>
+            <th>Fuel Type</th>
+            <th>Location</th>
+            <th>Pitching Price</th>
+            <th>Product Image</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for listing in pending_listings %}
+            <tr>
+              <td>{{ listing.brand }}</td>
+              <td>{{ listing.model }}</td>
+              <td>{{ listing.year }}</td>
+              <td>{{ listing.kms_driven }}</td>
+              <td>{{ listing.fuel_type }}</td>
+              <td>{{ listing.location }}</td>
+              <td>{{ listing.pitching_price }}</td>
+              <td>
+                <img src="{{ listing.product_image.url }}" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+              </td>
+              <td>
+                <a href="{% url 'approve-listing' listing.id %}">Approve</a> |
+                <a href="{% url 'reject-listing' listing.id %}">Reject</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
