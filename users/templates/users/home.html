@@ -91,7 +91,7 @@
     <div class="container">
       <div class="sidebar">
         <h3>Filters</h3>
-        <form>
+        <form id="filters-form">
           <!-- Budget Filter -->
           <h4 onclick="toggleFilter('budget-filter')">Your Budget <span class="arrow">&#9654;</span></h4>
           <div id="budget-filter" class="filter-content">
@@ -175,9 +175,9 @@
         <p>This is the home page of the Believe Cars website.</p>
 
         <!-- Display approved vehicle listings as cards -->
-        <div class="cards-container">
+        <div class="cards-container" id="vehicle-cards-container">
           {% for listing in approved_listings %}
-            <div class="card">
+            <div class="card" data-price="{{ listing.pitching_price }}" data-brand="{{ listing.brand }}" data-premium-brand="{{ listing.brand }}" data-rating="{{ listing.star_rating }}" data-year="{{ listing.year }}" data-kms="{{ listing.kms_driven }}" data-fuel-type="{{ listing.fuel_type }}" data-transmission="{{ listing.transmission }}">
               <img src="{{ listing.product_image.url }}" alt="Product Image" />
               <div class="card-content">
                 <h3>{{ listing.brand }} {{ listing.model }}</h3>
@@ -194,7 +194,7 @@
                   <strong>Location:</strong> {{ listing.location }}
                 </p>
                 <p>
-                  <strong>Pitching Price:</strong> {{ listing.pitching_price }}
+                  <strong>Pitching Price:</strong> ₹{{ listing.pitching_price }}
                 </p>
                 {% if listing.star_rating %}
                   <p>
@@ -225,6 +225,120 @@
         filterContent.classList.toggle('active')
         arrow.classList.toggle('down')
       }
+      
+      // Function to filter the vehicle listings based on selected filters
+      function filterVehicles() {
+        const cardsContainer = document.getElementById('vehicle-cards-container')
+        const cards = cardsContainer.getElementsByClassName('card')
+        const filtersForm = document.getElementById('filters-form')
+        const formData = new FormData(filtersForm)
+      
+        // Iterate through each card and filter based on the form data
+        for (let card of cards) {
+          let showCard = true
+      
+          // Budget filter
+          const price = parseFloat(card.getAttribute('data-price'))
+          const budgetFilters = formData.getAll('budget')
+          if (budgetFilters.length > 0) {
+            showCard = budgetFilters.some((budget) => {
+              if (budget === 'under-2-lakhs' && price < 200000) return true
+              if (budget === '2-5-lakhs' && price >= 200000 && price <= 500000) return true
+              if (budget === '5-10-lakhs' && price > 500000 && price <= 1000000) return true
+              if (budget === 'above-10-lakhs' && price > 1000000) return true
+              return false
+            })
+          }
+      
+          // Brand filter
+          if (showCard) {
+            const brand = card.getAttribute('data-brand')
+            const brandFilters = formData.getAll('brand')
+            if (brandFilters.length > 0) {
+              showCard = brandFilters.includes(brand)
+            }
+          }
+      
+          // Premium Brand filter
+          if (showCard) {
+            const premiumBrand = card.getAttribute('data-premium-brand')
+            const premiumBrandFilters = formData.getAll('premium-brand')
+            if (premiumBrandFilters.length > 0) {
+              showCard = premiumBrandFilters.includes(premiumBrand)
+            }
+          }
+      
+          // Rating filter
+          if (showCard) {
+            const rating = parseInt(card.getAttribute('data-rating'))
+            const ratingFilter = formData.get('rating')
+            if (ratingFilter) {
+              showCard = rating >= parseInt(ratingFilter)
+            }
+          }
+      
+          // Year filter
+          if (showCard) {
+            const year = parseInt(card.getAttribute('data-year'))
+            const yearFilters = formData.getAll('year')
+            if (yearFilters.length > 0) {
+              showCard = yearFilters.some((yearFilter) => {
+                if (yearFilter === '2015' && year >= 2015) return true
+                if (yearFilter === '2010-2014' && year >= 2010 && year <= 2014) return true
+                if (yearFilter === '2005-2009' && year >= 2005 && year <= 2009) return true
+                if (yearFilter === 'before-2005' && year < 2005) return true
+                return false
+              })
+            }
+          }
+      
+          // Kilometers Driven filter
+          if (showCard) {
+            const kms = parseInt(card.getAttribute('data-kms'))
+            const kmsFilters = formData.getAll('kms-driven')
+            if (kmsFilters.length > 0) {
+              showCard = kmsFilters.some((kmsFilter) => {
+                if (kmsFilter === '0-50000' && kms <= 50000) return true
+                if (kmsFilter === '50000-100000' && kms > 50000 && kms <= 100000) return true
+                if (kmsFilter === '100000-150000' && kms > 100000 && kms <= 150000) return true
+                if (kmsFilter === 'above-150000' && kms > 150000) return true
+                return false
+              })
+            }
+          }
+      
+          // Fuel Type filter
+          if (showCard) {
+            const fuelType = card.getAttribute('data-fuel-type')
+            const fuelTypeFilters = formData.getAll('fuel-type')
+            if (fuelTypeFilters.length > 0) {
+              showCard = fuelTypeFilters.includes(fuelType)
+            }
+          }
+      
+          // Transmission filter
+          if (showCard) {
+            const transmission = card.getAttribute('data-transmission')
+            const transmissionFilters = formData.getAll('transmission')
+            if (transmissionFilters.length > 0) {
+              showCard = transmissionFilters.includes(transmission)
+            }
+          }
+      
+          // Priorities filter
+          if (showCard) {
+            const priorityFilters = formData.getAll('priority')
+            // Add any logic for priority filtering if needed
+          }
+      
+          // Show or hide card based on filters
+          card.style.display = showCard ? 'block' : 'none'
+        }
+      }
+      
+      // Add event listeners to filter checkboxes and radio buttons
+      const filtersForm = document.getElementById('filters-form')
+      filtersForm.addEventListener('change', filterVehicles)
     </script>
   </body>
 </html>
