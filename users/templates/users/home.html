@@ -173,7 +173,12 @@
         <h2>Welcome to the Home Page</h2>
         <h1>Welcome to Believe Cars</h1>
         <p>This is the home page of the Believe Cars website.</p>
-
+        <!-- Other content here -->
+        {% if request.user.is_authenticated and not request.user.is_superuser %}
+          {% if request.user.userprofile.user_type == 'seller' %}
+            <a href="{% url 'sell-vehicle' %}" class="btn btn-primary">Sell Vehicle</a>
+          {% endif %}
+        {% endif %}
         <!-- Display approved vehicle listings as cards -->
         <div class="cards-container" id="vehicle-cards-container">
           {% for listing in approved_listings %}
@@ -212,11 +217,11 @@
     </div>
 
     <!-- Other content here -->
-    {% if request.user.is_authenticated and not request.user.is_superuser %}
+    {% comment %} {% if request.user.is_authenticated and not request.user.is_superuser %}
       {% if request.user.userprofile.user_type == 'seller' %}
         <a href="{% url 'sell-vehicle' %}" class="btn btn-primary">Sell Vehicle</a>
       {% endif %}
-    {% endif %}
+    {% endif %} {% endcomment %}
 
     <script>
       function toggleFilter(filterId) {
