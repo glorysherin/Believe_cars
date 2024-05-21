@@ -36,6 +36,7 @@ class VehicleListing(models.Model):
 
     def __str__(self):
         return f"{self.brand} {self.model} - {self.year}"
+    
     @staticmethod
     def get_pending_approvals():
         return VehicleListing.objects.filter(is_approved=False)

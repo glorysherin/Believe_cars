@@ -8,25 +8,83 @@
     <title>Owner Home Page</title>
     <!-- Include necessary CSS files or stylesheets -->
     <style>
-      .card-container {
+      /* Container styles */
+      .container {
+        display: flex;
+        flex-direction: row;
+        font-family: Arial, sans-serif;
+      }
+      /* Sidebar styles */
+      .sidebar {
+        width: 250px;
+        padding: 20px;
+        border-right: 1px solid #ccc;
+        background-color: #f9f9f9;
+      }
+      .sidebar h3 {
+        font-size: 18px;
+        margin-bottom: 15px;
+      }
+      .sidebar h4 {
+        font-size: 16px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .sidebar input {
+        margin-right: 10px;
+      }
+      .filter-content {
+        display: none;
+        padding-left: 10px;
+      }
+      .filter-content.active {
+        display: block;
+      }
+      .arrow {
+        font-size: 12px;
+        transform: rotate(0deg);
+        transition: transform 0.3s;
+      }
+      .arrow.down {
+        transform: rotate(90deg);
+      }
+      /* Main content styles */
+      .main-content {
+        flex: 1;
+        padding: 20px;
+      }
+      .main-content h1,
+      .main-content h2 {
+        color: #333;
+      }
+      .cards-container {
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
       }
+      /* Card styles */
       .card {
         border: 1px solid #ccc;
         border-radius: 8px;
         padding: 10px;
-        width: 300px;
+        width: calc(33.33% - 20px);
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        background-color: #fff;
       }
       .card img {
         max-width: 100%;
         height: auto;
         border-radius: 8px;
       }
-      .card-body {
+      .card-content {
         padding: 10px;
+      }
+      .card-content h3 {
+        margin: 10px 0;
       }
       .star-ratings {
         color: orange;
@@ -41,38 +99,279 @@
       <a href="{% url 'view-approvals' %}" class="btn btn-secondary">View Approvals</a>
     </div>
     <div class="container">
-      <h2>Approved Vehicle Listings</h2>
-      <div class="card-container">
-        {% for listing in approved_listings %}
-          <div class="card">
-            <img src="{{ listing.product_image.url }}" alt="Vehicle Image" />
-            <div class="card-body">
-              <h3>{{ listing.brand }} {{ listing.model }} - {{ listing.year }}</h3>
-              <p>
-                <strong>Location:</strong> {{ listing.location }}
-              </p>
-              <p>
-                <strong>Kms Driven:</strong> {{ listing.kms_driven }}
-              </p>
-              <p>
-                <strong>Fuel Type:</strong> {{ listing.fuel_type }}
-              </p>
-              <p>
-                <strong>Pitching Price:</strong> {{ listing.pitching_price }}
-              </p>
-              {% if listing.star_rating %}
-                <p>
-                  <strong>Owner Rating:</strong> {{ listing.star_rating }} / 5
-                </p>
-              {% endif %}
-              <p>
-                <strong>Uploaded At:</strong> {{ listing.uploaded_at }}
-              </p> <!-- New field displayed -->
-              <a href="{% url 'view-vehicle' listing.id %}" class="btn btn-secondary">View More</a>
-            </div>
+      <div class="sidebar">
+        <h3>Filters</h3>
+        <form id="filters-form">
+          <!-- Budget Filter -->
+          <h4 onclick="toggleFilter('budget-filter')">Your Budget <span class="arrow">&#9654;</span></h4>
+          <div id="budget-filter" class="filter-content">
+            <label><input type="checkbox" name="budget" value="under-2-lakhs" />Under ₹2,00,000</label><br />
+            <label><input type="checkbox" name="budget" value="2-5-lakhs" />₹2,00,000 - ₹5,00,000</label><br />
+            <label><input type="checkbox" name="budget" value="5-10-lakhs" />₹5,00,000 - ₹10,00,000</label><br />
+            <label><input type="checkbox" name="budget" value="above-10-lakhs" />Above ₹10,00,000</label><br />
           </div>
-        {% endfor %}
+
+          <!-- Brand Filter -->
+          <h4 onclick="toggleFilter('brand-filter')">Brand <span class="arrow">&#9654;</span></h4>
+          <div id="brand-filter" class="filter-content">
+            <label><input type="checkbox" name="brand" value="maruti-suzuki" />Maruti Suzuki</label><br />
+            <label><input type="checkbox" name="brand" value="tata" />Tata</label><br />
+            <label><input type="checkbox" name="brand" value="hyundai" />Hyundai</label><br />
+            <label><input type="checkbox" name="brand" value="toyota" />Toyota</label><br />
+          </div>
+
+          <!-- Premium Brands Filter -->
+          <h4 onclick="toggleFilter('premium-brand-filter')">Premium Brands <span class="arrow">&#9654;</span></h4>
+          <div id="premium-brand-filter" class="filter-content">
+            <label><input type="checkbox" name="premium-brand" value="audi" />Audi</label><br />
+            <label><input type="checkbox" name="premium-brand" value="bmw" />BMW</label><br />
+            <label><input type="checkbox" name="premium-brand" value="mercedes" />Mercedes</label><br />
+            <label><input type="checkbox" name="premium-brand" value="volvo" />Volvo</label><br />
+          </div>
+
+          <!-- Rating Filter -->
+          <h4 onclick="toggleFilter('rating-filter')">Rating <span class="arrow">&#9654;</span></h4>
+          <div id="rating-filter" class="filter-content">
+            <label><input type="radio" name="rating" value="1" />1 Star</label><br />
+            <label><input type="radio" name="rating" value="2" />2 Stars</label><br />
+            <label><input type="radio" name="rating" value="3" />3 Stars</label><br />
+            <label><input type="radio" name="rating" value="4" />4 Stars</label><br />
+            <label><input type="radio" name="rating" value="5" />5 Stars</label><br />
+          </div>
+
+          <!-- Year Filter -->
+          <h4 onclick="toggleFilter('year-filter')">Year <span class="arrow">&#9654;</span></h4>
+          <div id="year-filter" class="filter-content">
+            <label><input type="checkbox" name="year" value="2015" />2015 & Later</label><br />
+            <label><input type="checkbox" name="year" value="2010-2014" />2010 - 2014</label><br />
+            <label><input type="checkbox" name="year" value="2005-2009" />2005 - 2009</label><br />
+            <label><input type="checkbox" name="year" value="before-2005" />Before 2005</label><br />
+          </div>
+
+          <!-- Kilometers Driven Filter -->
+          <h4 onclick="toggleFilter('kms-driven-filter')">Kilometers Driven <span class="arrow">&#9654;</span></h4>
+          <div id="kms-driven-filter" class="filter-content">
+            <label><input type="checkbox" name="kms-driven" value="0-50000" />0 - 50,000 kms</label><br />
+            <label><input type="checkbox" name="kms-driven" value="50000-100000" />50,000 - 1,00,000 kms</label><br />
+            <label><input type="checkbox" name="kms-driven" value="100000-150000" />1,00,000 - 1,50,000 kms</label><br />
+            <label><input type="checkbox" name="kms-driven" value="above-150000" />Above 1,50,000 kms</label><br />
+          </div>
+
+          <!-- Fuel Type Filter -->
+          <h4 onclick="toggleFilter('fuel-type-filter')">Fuel Type <span class="arrow">&#9654;</span></h4>
+          <div id="fuel-type-filter" class="filter-content">
+            <label><input type="checkbox" name="fuel-type" value="petrol" />Petrol</label><br />
+            <label><input type="checkbox" name="fuel-type" value="diesel" />Diesel</label><br />
+            <label><input type="checkbox" name="fuel-type" value="cng" />CNG</label><br />
+          </div>
+
+          <!-- Transmission Filter -->
+          <h4 onclick="toggleFilter('transmission-filter')">Transmission <span class="arrow">&#9654;</span></h4>
+          <div id="transmission-filter" class="filter-content">
+            <label><input type="checkbox" name="transmission" value="manual" />Manual</label><br />
+            <label><input type="checkbox" name="transmission" value="automatic" />Automatic</label><br />
+          </div>
+
+          <!-- Priorities Filter -->
+          <h4 onclick="toggleFilter('priority-filter')">Priorities <span class="arrow">&#9654;</span></h4>
+          <div id="priority-filter" class="filter-content">
+            <label><input type="checkbox" name="priority" value="best-value" />Best Value for Customers</label><br />
+          </div>
+        </form>
       </div>
+      <div class="main-content">
+        <h1>Car Listings</h1>
+        <div class="cards-container" id="vehicle-cards-container">
+          <h2>Welcome to the Home Page</h2>
+          <h1>Welcome to Believe Cars</h1>
+          <p>This is the home page of the Believe Cars website.</p>
+          <!-- Other content here -->
+          {% if request.user.is_authenticated and not request.user.is_superuser %}
+            {% if request.user.userprofile.user_type == 'seller' %}
+              <a href="{% url 'sell-vehicle' %}" class="btn btn-primary">Sell Vehicle</a>
+            {% endif %}
+          {% endif %}
+          <!-- Display approved vehicle listings as cards -->
+          <div class="cards-container" id="vehicle-cards-container">
+            {% for listing in approved_listings %}
+              <div class="card" data-price="{{ listing.pitching_price }}" data-brand="{{ listing.brand }}" data-premium-brand="{{ listing.brand }}" data-rating="{{ listing.star_rating }}" data-year="{{ listing.year }}" data-kms="{{ listing.kms_driven }}" data-fuel-type="{{ listing.fuel_type }}" data-transmission="{{ listing.transmission }}">
+                <img src="{{ listing.product_image.url }}" alt="Product Image" />
+                <div class="card-content">
+                  <h3>{{ listing.brand }} {{ listing.model }}</h3>
+                  <p>
+                    <strong>Year:</strong> {{ listing.year }}
+                  </p>
+                  <p>
+                    <strong>Kms Driven:</strong> {{ listing.kms_driven }}
+                  </p>
+                  <p>
+                    <strong>Fuel Type:</strong> {{ listing.fuel_type }}
+                  </p>
+                  <p>
+                    <strong>Location:</strong> {{ listing.location }}
+                  </p>
+                  <p>
+                    <strong>Pitching Price:</strong> ₹{{ listing.pitching_price }}
+                  </p>
+                  {% if listing.star_rating %}
+                    <p>
+                      <strong>Rating:</strong>
+                      {% for i in 'x'|rjust:listing.star_rating %}
+                        <span class="star-ratings">★</span>
+                      {% endfor %}
+                    </p>
+                  {% endif %}
+                  <p>
+                    <strong>Uploaded At:</strong> {{ listing.uploaded_at }}
+                  </p> <!-- New field displayed -->
+                  <a href="{% url 'view-vehicle' listing.id %}" class="btn btn-primary">View More</a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <p></p>
+        </div>
+      </div>
+
+      <div id="no-results" style="display: none; color: red; text-align: center; font-size: 20px; margin-top: 20px;">No results found</div>
     </div>
+
+    <!-- Other content here -->
+    {% comment %} {% if request.user.is_authenticated and not request.user.is_superuser %}
+      {% if request.user.userprofile.user_type == 'seller' %}
+        <a href="{% url 'sell-vehicle' %}" class="btn btn-primary">Sell Vehicle</a>
+      {% endif %}
+    {% endif %} {% endcomment %}
+
+    <script>
+      function toggleFilter(filterId) {
+        const filterContent = document.getElementById(filterId)
+        const arrow = filterContent.previousElementSibling.querySelector('.arrow')
+        filterContent.classList.toggle('active')
+        arrow.classList.toggle('down')
+      }
+      
+      function filterVehicles() {
+        const cardsContainer = document.getElementById('vehicle-cards-container')
+        const cards = cardsContainer.getElementsByClassName('card')
+        const filtersForm = document.getElementById('filters-form')
+        const formData = new FormData(filtersForm)
+        let visibleCardCount = 0
+      
+        for (let card of cards) {
+          let showCard = true
+      
+          // Budget filter
+          const price = parseFloat(card.getAttribute('data-price'))
+          const budgetFilters = formData.getAll('budget')
+          if (budgetFilters.length > 0) {
+            showCard = budgetFilters.some((budget) => {
+              if (budget === 'under-2-lakhs' && price < 200000) return true
+              if (budget === '2-5-lakhs' && price >= 200000 && price <= 500000) return true
+              if (budget === '5-10-lakhs' && price > 500000 && price <= 1000000) return true
+              if (budget === 'above-10-lakhs' && price > 1000000) return true
+              return false
+            })
+          }
+      
+          // Brand filter
+          if (showCard) {
+            const brand = card.getAttribute('data-brand')
+            const brandFilters = formData.getAll('brand')
+            if (brandFilters.length > 0) {
+              showCard = brandFilters.includes(brand)
+            }
+          }
+      
+          // Premium Brand filter
+          if (showCard) {
+            const premiumBrand = card.getAttribute('data-premium-brand')
+            const premiumBrandFilters = formData.getAll('premium-brand')
+            if (premiumBrandFilters.length > 0) {
+              showCard = premiumBrandFilters.includes(premiumBrand)
+            }
+          }
+      
+          // Rating filter
+          if (showCard) {
+            const rating = parseInt(card.getAttribute('data-rating'))
+            const ratingFilter = formData.get('rating')
+            if (ratingFilter) {
+              showCard = rating >= parseInt(ratingFilter)
+            }
+          }
+      
+          // Year filter
+          if (showCard) {
+            const year = parseInt(card.getAttribute('data-year'))
+            const yearFilters = formData.getAll('year')
+            if (yearFilters.length > 0) {
+              showCard = yearFilters.some((yearFilter) => {
+                if (yearFilter === '2015' && year >= 2015) return true
+                if (yearFilter === '2010-2014' && year >= 2010 && year <= 2014) return true
+                if (yearFilter === '2005-2009' && year >= 2005 && year <= 2009) return true
+                if (yearFilter === 'before-2005' && year < 2005) return true
+                return false
+              })
+            }
+          }
+      
+          // Kilometers Driven filter
+          if (showCard) {
+            const kms = parseInt(card.getAttribute('data-kms'))
+            const kmsFilters = formData.getAll('kms-driven')
+            if (kmsFilters.length > 0) {
+              showCard = kmsFilters.some((kmsFilter) => {
+                if (kmsFilter === '0-50000' && kms <= 50000) return true
+                if (kmsFilter === '50000-100000' && kms > 50000 && kms <= 100000) return true
+                if (kmsFilter === '100000-150000' && kms > 100000 && kms <= 150000) return true
+                if (kmsFilter === 'above-150000' && kms > 150000) return true
+                return false
+              })
+            }
+          }
+      
+          // Fuel Type filter
+          if (showCard) {
+            const fuelType = card.getAttribute('data-fuel-type')
+            const fuelTypeFilters = formData.getAll('fuel-type')
+            if (fuelTypeFilters.length > 0) {
+              showCard = fuelTypeFilters.includes(fuelType)
+            }
+          }
+      
+          // Transmission filter
+          if (showCard) {
+            const transmission = card.getAttribute('data-transmission')
+            const transmissionFilters = formData.getAll('transmission')
+            if (transmissionFilters.length > 0) {
+              showCard = transmissionFilters.includes(transmission)
+            }
+          }
+      
+          // Priorities filter
+          if (showCard) {
+            const priorityFilters = formData.getAll('priority')
+            // Add any logic for priority filtering if needed
+          }
+      
+          // Show or hide card based on filters
+          card.style.display = showCard ? 'block' : 'none'
+          if (showCard) visibleCardCount++
+        }
+      
+        // Display no results message if no cards are visible
+        const noResultsMessage = document.getElementById('no-results')
+        noResultsMessage.style.display = visibleCardCount === 0 ? 'block' : 'none'
+      }
+      
+      // Add event listeners to filter checkboxes and radio buttons
+      const filtersForm = document.getElementById('filters-form')
+      filtersForm.addEventListener('change', filterVehicles)
+      
+      // Initial call to display correct results on page load
+      window.onload = filterVehicles
+    </script>
   </body>
 </html>

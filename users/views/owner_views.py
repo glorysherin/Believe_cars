@@ -110,16 +110,19 @@ def reject_listing(request, listing_id):
         return redirect('view-approvals')
     return render(request, 'users/reject_listing.html', {'listing': listing})
 
-# # View to display approved listings on home page
-# def home(request):
-#     approved_listings = VehicleListing.objects.filter(is_approved=True)
-#     context = {
-#         'approved_listings': approved_listings
-#     }
-#     return render(request, 'users/home.html', context)
+# View to display approved listings on home page
+# View to display approved listings on home page
+def home(request):
+    approved_listings = VehicleListing.objects.filter(is_approved=True).order_by('-uploaded_at')
+    context = {
+        'approved_listings': approved_listings
+    }
+    return render(request, 'users/owner_home.html', context)
+
+
 @user_passes_test(is_owner)
-def view_vehicle(request, vehicle_id):
-    listing = get_object_or_404(VehicleListing, id=vehicle_id)
+def view_vehicle(request, listing_id):
+    listing = get_object_or_404(VehicleListing, id=listing_id)
     return render(request, 'users/view_vehicle.html', {'listing': listing})
 # def view_vehicle(request, listing_id):
 #     listing = get_object_or_404(VehicleListing, id=listing_id)

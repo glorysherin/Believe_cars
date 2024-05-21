@@ -8,7 +8,7 @@ from users.forms import UserRegisterForm, UserLoginForm,VehicleListingForm
 from users.models import UserProfile,VehicleListing,VehicleImage
 
 def home(request):
-    approved_listings = VehicleListing.objects.filter(is_approved=True)
+    approved_listings = VehicleListing.objects.filter(is_approved=True).order_by('-uploaded_at')
     context = {
         'approved_listings': approved_listings
     }
@@ -55,7 +55,6 @@ def owner_home(request):
     return render(request, 'users/owner_home.html', context)
 
 
-
 @login_required
 def sell_vehicle(request):
     if request.method == 'POST':
@@ -66,16 +65,15 @@ def sell_vehicle(request):
             listing.save()
 
             # Handle additional images
-            additional_images = form.cleaned_data.get('additional_images')
+            additional_images = request.FILES.getlist('additional_images')
             for image in additional_images:
                 VehicleImage.objects.create(listing=listing, image=image)
 
             return redirect('home')  # Redirect to home page after successful submission
     else:
         form = VehicleListingForm()
-    
     return render(request, 'users/sell_vehicle.html', {'form': form})
 
 def view_vehicle(request, listing_id):
-    listing = get_object_or_404(VehicleListing, id=listing)
+    listing = get_object_or_404(VehicleListing, id=listing_id)
     return render(request, 'users/view_vehicle.html', {'listing': listing})

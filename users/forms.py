@@ -35,20 +35,14 @@ class OwnerLoginForm(forms.Form):
   # forms.py
 
 class VehicleListingForm(forms.ModelForm):
-    additional_images = forms.FileField(
-        widget=forms.ClearableFileInput(attrs={'multiple': True}),
-        required=False
-    )
+    additional_images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
 
     class Meta:
         model = VehicleListing
-        fields = [
-            'brand', 'model', 'year', 'kms_driven', 'fuel_type', 'location',
-            'pitching_price', 'product_image', 'condition_description', 'additional_images'
-        ]
+        fields = ['brand', 'model', 'year', 'product_image', 'pitching_price', 'kms_driven', 'fuel_type', 'location', 'condition_description', 'additional_images']
 
-    def clean_additional_images(self):
-        files = self.files.getlist('additional_images')
-        if len(files) > 5:  # Set your limit here
-            raise forms.ValidationError("You can upload a maximum of 5 additional images.")
-        return files
+    # def clean_additional_images(self):
+    #     files = self.files.getlist('additional_images')
+    #     if len(files) > 5:  # Set your limit here
+    #         raise forms.ValidationError("You can upload a maximum of 5 additional images.")
+    #     return files
