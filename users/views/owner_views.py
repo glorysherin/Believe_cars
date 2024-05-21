@@ -91,7 +91,9 @@ def approve_listing(request, listing_id):
     listing = get_object_or_404(VehicleListing, id=listing_id)
     if request.method == 'POST':
         star_rating = request.POST.get('star_rating')
+        owner_review = request.POST.get('owner_review')
         listing.star_rating = star_rating
+        listing.owner_review = owner_review
         listing.is_approved = True
         listing.save()
         # Optionally, you can add a success message here
@@ -115,3 +117,13 @@ def reject_listing(request, listing_id):
 #         'approved_listings': approved_listings
 #     }
 #     return render(request, 'users/home.html', context)
+@user_passes_test(is_owner)
+def view_vehicle(request, vehicle_id):
+    listing = get_object_or_404(VehicleListing, id=vehicle_id)
+    return render(request, 'users/view_vehicle.html', {'listing': listing})
+# def view_vehicle(request, listing_id):
+#     listing = get_object_or_404(VehicleListing, id=listing_id)
+#     context = {
+#         'listing': listing
+#     }
+#     return render(request, 'users/view_vehicle.html', context)

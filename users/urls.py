@@ -4,6 +4,7 @@ from django.urls import path
 from .views import user_views, owner_views
 
 
+
 urlpatterns = [
     path('', user_views.home, name='home'),
     path('register/', user_views.user_register, name='user-register'),
@@ -20,4 +21,9 @@ urlpatterns = [
 
    path('owner/approve-listing/<int:listing_id>/', owner_views.approve_listing, name='approve-listing'),
     path('owner/reject-listing/<int:listing_id>/', owner_views.reject_listing, name='reject-listing'),
+        path('vehicle/<int:listing_id>/', user_views.view_vehicle, name='view-vehicle'),  # Add this line
+    path('owner/view_vehicle/<int:listing_id>/', owner_views.view_vehicle, name='view-vehicle'),
+     path('sell_vehicle/', user_views.sell_vehicle, name='sell_vehicle'),
+    path('view_vehicle/<int:vehicle_id>/', owner_views .view_vehicle, name='view_vehicle'),
+
 ]

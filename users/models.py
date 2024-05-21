@@ -2,6 +2,7 @@
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 class UserProfile(models.Model):
     USER_TYPE_CHOICES = [
@@ -27,11 +28,25 @@ class VehicleListing(models.Model):
     pitching_price = models.DecimalField(max_digits=10, decimal_places=2)
     product_image = models.ImageField(upload_to='vehicle_images/')
     is_approved = models.BooleanField(default=False)
-    star_rating = models.IntegerField(null=True, blank=True)  # New field for star ratings
-    
+    star_rating = models.IntegerField(null=True, blank=True)
+    condition_description = models.TextField(null=True, blank=True)
+    owner_review = models.TextField(null=True, blank=True)  # New field for owner's review
+    uploaded_at = models.DateTimeField(auto_now_add=True)  # New field for uploaded date and time
+
+
     def __str__(self):
         return f"{self.brand} {self.model} - {self.year}"
-    
     @staticmethod
     def get_pending_approvals():
         return VehicleListing.objects.filter(is_approved=False)
+
+class VehicleImage(models.Model):
+    listing = models.ForeignKey(VehicleListing, on_delete=models.CASCADE, related_name='additional_images')
+    image = models.ImageField(upload_to='vehicle_images/')
+
+    def __str__(self):
+        return f"Image for {self.listing.brand} {self.listing.model}"
+    
+    # @staticmethod
+    # def get_pending_approvals():
+    #     return VehicleListing.objects.filter(is_approved=False)

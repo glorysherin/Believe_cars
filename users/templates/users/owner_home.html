@@ -1,3 +1,5 @@
+<!-- users/templates/users/owner_home.html -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +8,6 @@
     <title>Owner Home Page</title>
     <!-- Include necessary CSS files or stylesheets -->
     <style>
-      /* Your custom styles for cards */
       .card-container {
         display: flex;
         flex-wrap: wrap;
@@ -64,6 +65,10 @@
                   <strong>Owner Rating:</strong> {{ listing.star_rating }} / 5
                 </p>
               {% endif %}
+              <p>
+                <strong>Uploaded At:</strong> {{ listing.uploaded_at }}
+              </p> <!-- New field displayed -->
+              <a href="{% url 'view-vehicle' listing.id %}" class="btn btn-secondary">View More</a>
             </div>
           </div>
         {% endfor %}

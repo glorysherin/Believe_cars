@@ -1,5 +1,3 @@
-<!-- users/templates/users/approve_listing.html -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -19,6 +17,10 @@
         {% csrf_token %}
         <label for="star_rating">Star Rating:</label>
         <input type="number" id="star_rating" name="star_rating" min="1" max="5" required />
+        <br />
+        <label for="owner_review">Owner Review:</label>
+        <textarea id="owner_review" name="owner_review" rows="4" cols="50"></textarea>
+        <br />
         <button type="submit">Approve</button>
       </form>
     </div>
