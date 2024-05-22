@@ -1,14 +1,107 @@
-<!-- users/templates/users/view_approvals.html -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>View Approvals</title>
-    <!-- Include any necessary CSS files or styles -->
     <style>
-      /* Your styles here */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .container {
+        width: 80%;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        overflow-x: auto; /* Enable horizontal scroll if needed */
+      }
+      
+      h2 {
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px; /* Added spacing between table and bottom content */
+      }
+      
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      
+      th {
+        background-color: #f2f2f2;
+        color: #333;
+      }
+      
+      td {
+        background-color: #fff;
+        color: #555;
+        vertical-align: middle; /* Center content vertically */
+      }
+      
+      img {
+        max-width: 100%;
+        height: auto; /* Maintain aspect ratio */
+        border-radius: 6px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .action-links {
+        white-space: nowrap; /* Prevent line break for action links */
+      }
+      
+      .action-links a {
+        display: inline-block;
+        text-decoration: none;
+        padding: 6px 12px;
+        margin-right: 8px;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+      }
+      
+      .approve-link {
+        background-color: #5cb85c;
+      }
+      
+      .reject-link {
+        background-color: #d9534f;
+      }
+      
+      .add-details-link {
+        background-color: #007bff;
+      }
+      
+      .edit-details-link {
+        background-color: #ffc107;
+      }
+      
+      /* Responsive adjustments */
+      @media only screen and (max-width: 768px) {
+        .container {
+          width: 100%;
+          border-radius: 0;
+        }
+        table {
+          font-size: 14px; /* Reduce font size for smaller screens */
+        }
+        .action-links a {
+          padding: 4px 8px; /* Smaller padding for action links */
+        }
+      }
     </style>
   </head>
   <body>
@@ -17,6 +110,8 @@
       <table>
         <thead>
           <tr>
+            <th>Seller Name</th>
+            <th>Mobile Number</th>
             <th>Brand</th>
             <th>Model</th>
             <th>Year</th>
@@ -25,12 +120,24 @@
             <th>Location</th>
             <th>Pitching Price</th>
             <th>Product Image</th>
+            <th>Additional Images</th>
+            <th>Condition Description</th>
+            <th>Owner Review</th>
+            <th>Uploaded At</th>
+            <th>Registration Year</th>
+            <th>Transmission</th>
+            <th>Number of Owners</th>
+            <th>Insurance Type</th>
+            <th>Insurance Validity</th>
+            <th>RTO</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for listing in pending_listings %}
             <tr>
+              <td>{{ listing.seller_name }}</td>
+              <td>{{ listing.mobile_number }}</td>
               <td>{{ listing.brand }}</td>
               <td>{{ listing.model }}</td>
               <td>{{ listing.year }}</td>
@@ -39,11 +146,36 @@
               <td>{{ listing.location }}</td>
               <td>{{ listing.pitching_price }}</td>
               <td>
-                <img src="{{ listing.product_image.url }}" alt="Product Image" style="max-width: 100px; max-height: 100px;" />
+                <img src="{{ listing.product_image.url }}" alt="Product Image" />
               </td>
               <td>
-                <a href="{% url 'approve-listing' listing.id %}">Approve</a> |
-                <a href="{% url 'reject-listing' listing.id %}">Reject</a>
+                {% if listing.additional_image1 %}
+                  <img src="{{ listing.additional_image1.url }}" alt="Additional Image 1" />
+                {% endif %}
+                {% if listing.additional_image2 %}
+                  <img src="{{ listing.additional_image2.url }}" alt="Additional Image 2" />
+                {% endif %}
+                {% if listing.additional_image3 %}
+                  <img src="{{ listing.additional_image3.url }}" alt="Additional Image 3" />
+                {% endif %}
+                {% if listing.additional_image4 %}
+                  <img src="{{ listing.additional_image4.url }}" alt="Additional Image 4" />
+                {% endif %}
+              </td>
+              <td>{{ listing.condition_description }}</td>
+              <td>{{ listing.owner_review }}</td>
+              <td>{{ listing.uploaded_at }}</td>
+              <td>{{ listing.registration_year }}</td>
+              <td>{{ listing.transmission }}</td>
+              <td>{{ listing.num_owners }}</td>
+              <td>{{ listing.insurance_type }}</td>
+              <td>{{ listing.insurance_validity }}</td>
+              <td>{{ listing.rto }}</td>
+              <td class="action-links">
+                <a href="{% url 'approve-listing' listing.id %}" class="approve-link">Approve</a>
+                <a href="{% url 'reject-listing' listing.id %}" class="reject-link">Reject</a>
+                <a href="{% url 'add-details' listing.id %}" class="add-details-link">Add Details</a>
+                <a href="{% url 'edit-details' listing.id %}" class="edit-details-link">Edit Details</a>
               </td>
             </tr>
           {% endfor %}

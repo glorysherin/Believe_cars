@@ -1,15 +1,167 @@
-<!-- templates/users/sell_vehicle.html -->
-
 <!DOCTYPE html>
 <html>
   <head>
     <title>Sell Your Vehicle</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+      
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      
+      form {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      .form-group {
+        margin-bottom: 15px;
+      }
+      
+      label {
+        font-weight: bold;
+        display: block;
+      }
+      
+      input[type='text'],
+      input[type='file'],
+      select {
+        width: calc(100% - 12px);
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      
+      button[type='submit'] {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      
+      button[type='submit']:hover {
+        background-color: #45a049;
+      }
+      
+      .error-message {
+        color: red;
+        margin-top: 5px;
+      }
+    </style>
   </head>
   <body>
     <h1>Sell Your Vehicle</h1>
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      {{ form.as_p }}
+      <!-- Display non-field errors -->
+      {% if form.non_field_errors %}
+        <ul class="error-message">
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="id_seller_name">Seller Name:</label>
+        {{ form.seller_name }}
+      </div>
+      <div class="form-group">
+        <label for="id_mobile_number">Mobile no:</label>
+        {{ form.mobile_number }}
+      </div>
+      <div class="form-group">
+        <label for="id_brand">Brand:</label>
+        {{ form.brand }}
+      </div>
+      <div class="form-group">
+        <label for="id_model">Model:</label>
+        {{ form.model }}
+      </div>
+      <div class="form-group">
+        <label for="id_year">Year:</label>
+        {{ form.year }}
+      </div>
+      <div class="form-group">
+        <label for="id_product_image">Main Image:</label>
+        {{ form.product_image }}
+      </div>
+      <div class="form-group">
+        <label for="id_additional_image1">Additional Image 1:</label>
+        {{ form.additional_image1 }}
+      </div>
+      <div class="form-group">
+        <label for="id_additional_image2">Additional Image 2:</label>
+        {{ form.additional_image2 }}
+      </div>
+      <div class="form-group">
+        <label for="id_additional_image3">Additional Image 3:</label>
+        {{ form.additional_image3 }}
+      </div>
+      <div class="form-group">
+        <label for="id_additional_image4">Additional Image 4:</label>
+        {{ form.additional_image4 }}
+      </div>
+      <div class="form-group">
+        <label for="id_pitching_price">Pitching Price:</label>
+        {{ form.pitching_price }}
+      </div>
+      <div class="form-group">
+        <label for="id_kms_driven">Kilometers Driven:</label>
+        {{ form.kms_driven }}
+      </div>
+      <div class="form-group">
+        <label for="id_fuel_type">Fuel Type:</label>
+        {{ form.fuel_type }}
+      </div>
+      <div class="form-group">
+        <label for="id_location">Location:</label>
+        {{ form.location }}
+      </div>
+      <div class="form-group">
+        <label for="id_condition_description">Condition Description:</label>
+        {{ form.condition_description }}
+      </div>
+      <div class="form-group">
+        <label for="id_registration_year">Registration Year:</label>
+        {{ form.registration_year }}
+      </div>
+      <div class="form-group">
+        <label for="id_transmission">Transmission:</label>
+        {{ form.transmission }}
+      </div>
+      <div class="form-group">
+        <label for="id_num_owners">Number of Owners:</label>
+        {{ form.num_owners }}
+      </div>
+      <div class="form-group">
+        <label for="id_insurance_type">Insurance Type:</label>
+        {{ form.insurance_type }}
+      </div>
+      <div class="form-group">
+        <label for="id_insurance_validity">Insurance Validity:</label>
+        <input type="date" id="id_insurance_validity" name="insurance_validity" />
+      </div>
+      <div class="form-group">
+        <label for="id_rto">RTO:</label>
+        {{ form.rto }}
+      </div>
+
       <button type="submit">Submit for approval</button>
     </form>
   </body>

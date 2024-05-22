@@ -1,0 +1,15 @@
+<div class="container">
+  <h2>Add Details for {{ listing.brand }} {{ listing.model }} - {{ listing.year }}</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ vehicle_form.as_p }}
+
+    <h3>Car Specifications</h3>
+    {{ car_spec_form.as_p }}
+
+    <h3>Inspection Report</h3>
+    {{ inspection_report_form.as_p }}
+
+    <button type="submit">Submit</button>
+  </form>
+</div>

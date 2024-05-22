@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile,VehicleListing,VehicleImage
+from .models import UserProfile,VehicleListing,CarSpecification, InspectionReport, VehicleListing
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -35,14 +35,47 @@ class OwnerLoginForm(forms.Form):
   # forms.py
 
 class VehicleListingForm(forms.ModelForm):
-    additional_images = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
-
     class Meta:
         model = VehicleListing
-        fields = ['brand', 'model', 'year', 'product_image', 'pitching_price', 'kms_driven', 'fuel_type', 'location', 'condition_description', 'additional_images']
+        fields = ['seller_name', 'mobile_number', 'brand', 'model', 'year', 'product_image', 
+                  'additional_image1', 'additional_image2', 'additional_image3', 'additional_image4', 
+                  'pitching_price', 'kms_driven', 'fuel_type', 'location', 'condition_description',
+                  'registration_year', 'transmission', 'num_owners', 'insurance_type', 
+                  'insurance_validity', 'rto']
 
-    # def clean_additional_images(self):
-    #     files = self.files.getlist('additional_images')
-    #     if len(files) > 5:  # Set your limit here
-    #         raise forms.ValidationError("You can upload a maximum of 5 additional images.")
-    #     return files
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Example: Add placeholders or additional attributes to form fields
+        self.fields['registration_year'].widget.attrs['placeholder'] = 'YYYY'
+        self.fields['kms_driven'].widget.attrs['placeholder'] = 'Enter kilometers'
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        additional_image1 = cleaned_data.get("additional_image1")
+        additional_image2 = cleaned_data.get("additional_image2")
+        additional_image3 = cleaned_data.get("additional_image3")
+        additional_image4 = cleaned_data.get("additional_image4")
+
+        # Validate that all four additional images are uploaded
+        if not (additional_image1 and additional_image2 and additional_image3 and additional_image4):
+            raise forms.ValidationError("All four additional images must be uploaded.")
+
+        # Example: Add more validation logic as needed
+        pitching_price = cleaned_data.get("pitching_price")
+        if pitching_price <= 0:
+            raise forms.ValidationError("Pitching price must be greater than zero.")
+
+        return cleaned_data
+    
+    
+class CarSpecificationForm(forms.ModelForm):
+    class Meta:
+        model = CarSpecification
+        fields = ['mileage_arai', 'boot_space', 'ground_clearance', 'seating_capacity',
+                  'fuel_tank_capacity', 'displacement']
+
+class InspectionReportForm(forms.ModelForm):
+    class Meta:
+        model = InspectionReport
+        fields = ['engine_peripherals', 'drivetrain', 'body_structure_chassis',
+                  'exterior', 'interior', 'mechanical', 'wheels_tyres']

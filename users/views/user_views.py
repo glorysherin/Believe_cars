@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from users.forms import UserRegisterForm, UserLoginForm,VehicleListingForm
-from users.models import UserProfile,VehicleListing,VehicleImage
+from users.models import UserProfile,VehicleListing
 
 def home(request):
     approved_listings = VehicleListing.objects.filter(is_approved=True).order_by('-uploaded_at')
@@ -55,23 +55,26 @@ def owner_home(request):
     return render(request, 'users/owner_home.html', context)
 
 
+
 @login_required
 def sell_vehicle(request):
     if request.method == 'POST':
         form = VehicleListingForm(request.POST, request.FILES)
         if form.is_valid():
+            # Save the form data after modifying any necessary fields
             listing = form.save(commit=False)
-            listing.seller = request.user
+            listing.seller = request.user  # Assuming you have a seller field in your model
+            # Handle insurance_validity separately (if needed)
+            insurance_validity = request.POST.get('insurance_validity')
+            # Further processing if necessary, then save
             listing.save()
+            
+            # Redirect to home page after successful submission
+            return redirect('home')  # Adjust the URL name as per your project
 
-            # Handle additional images
-            additional_images = request.FILES.getlist('additional_images')
-            for image in additional_images:
-                VehicleImage.objects.create(listing=listing, image=image)
-
-            return redirect('home')  # Redirect to home page after successful submission
     else:
         form = VehicleListingForm()
+    
     return render(request, 'users/sell_vehicle.html', {'form': form})
 
 def view_vehicle(request, listing_id):
