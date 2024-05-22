@@ -45,6 +45,8 @@ class VehicleListing(models.Model):
     insurance_type = models.CharField(max_length=100)  # Remove default value
     insurance_validity = models.DateField()
     rto = models.CharField(max_length=100)  # Remove default value
+    full_details = models.FileField(upload_to='full_details/', null=True, blank=True)  # New field
+
 
     def __str__(self):
         return f"{self.brand} {self.model} - {self.year}"
@@ -74,6 +76,7 @@ class InspectionReport(models.Model):
     interior = models.TextField()
     mechanical = models.TextField()
     wheels_tyres = models.TextField()
+
 
     def __str__(self):
         return f"Inspection Report for {self.vehicle_listing.brand} {self.vehicle_listing.model} - {self.vehicle_listing.year}"

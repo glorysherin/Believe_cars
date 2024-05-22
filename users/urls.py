@@ -17,9 +17,7 @@ urlpatterns = [
     path('vehicle/<int:listing_id>/', user_views.view_vehicle, name='view-vehicle'),
     path('owner/view_vehicle/<int:listing_id>/', owner_views.view_vehicle, name='owner-view-vehicle'),
  path('owner/add-details/<int:listing_id>/', owner_views.add_details, name='add-details'),  # New path for add details
-    path('owner/edit-details/<int:listing_id>/', owner_views.edit_details, name='edit-details'),  # New path for edit details
  path('owner/add-details/<int:listing_id>/', owner_views.add_details, name='add-details'),
-    path('owner/edit-details/<int:listing_id>/', owner_views.edit_details, name='edit-details'),
 ]
 
 #  path('sell_vehicle/', user_views.sell_vehicle, name='sell_vehicle'),

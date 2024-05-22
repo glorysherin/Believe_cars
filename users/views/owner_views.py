@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from users.forms import OwnerLoginForm,VehicleListingForm,CarSpecificationForm, InspectionReportForm
 import openpyxl
 from django.http import HttpResponse
-from users.models import UserProfile
+from users.models import UserProfile,CarSpecification  
 
 import openpyxl
 from django.shortcuts import render, redirect,get_object_or_404
@@ -109,26 +109,54 @@ def reject_listing(request, listing_id):
         # Optionally, you can add a success message here
         return redirect('view-approvals')
     return render(request, 'users/reject_listing.html', {'listing': listing})
-
 @user_passes_test(is_owner)
 def add_details(request, listing_id):
     listing = get_object_or_404(VehicleListing, pk=listing_id)
     
     if request.method == 'POST':
-        vehicle_form = VehicleListingForm(request.POST, instance=listing)
+        vehicle_form = VehicleListingForm(request.POST, request.FILES, instance=listing)
         car_spec_form = CarSpecificationForm(request.POST)
         inspection_report_form = InspectionReportForm(request.POST)
         
         if vehicle_form.is_valid() and car_spec_form.is_valid() and inspection_report_form.is_valid():
-            vehicle_form.save()
-            car_spec_instance = car_spec_form.save(commit=False)
-            car_spec_instance.vehicle_listing = listing
-            car_spec_instance.save()
-            inspection_report_instance = inspection_report_form.save(commit=False)
-            inspection_report_instance.vehicle_listing = listing
-            inspection_report_instance.save()
-            messages.success(request, 'Details added successfully!')
-            return redirect('view-approvals')
+            try:
+                with transaction.atomic():
+                    vehicle_form.save()
+
+                    # Update or create CarSpecification instance
+                    car_spec_instance, created = CarSpecification.objects.get_or_create(
+                        vehicle_listing=listing,
+                        defaults=car_spec_form.cleaned_data
+                    )
+                    if not created:
+                        for field, value in car_spec_form.cleaned_data.items():
+                            setattr(car_spec_instance, field, value)
+                        car_spec_instance.save()
+                    
+                    # Update or create InspectionReport instance
+                    inspection_report_instance, created = InspectionReport.objects.get_or_create(
+                        vehicle_listing=listing,
+                        defaults=inspection_report_form.cleaned_data
+                    )
+                    if not created:
+                        for field, value in inspection_report_form.cleaned_data.items():
+                            setattr(inspection_report_instance, field, value)
+                        inspection_report_instance.save()
+
+                    # Handling image deletions
+                    if 'clear_additional_image1' in request.POST:
+                        listing.additional_image1.delete()
+                    if 'clear_additional_image2' in request.POST:
+                        listing.additional_image2.delete()
+                    if 'clear_additional_image3' in request.POST:
+                        listing.additional_image3.delete()
+                    if 'clear_additional_image4' in request.POST:
+                        listing.additional_image4.delete()
+                    
+                    messages.success(request, 'Details added successfully!')
+                    return redirect('view-approvals')
+            except Exception as e:
+                messages.error(request, f'An error occurred: {e}')
     else:
         vehicle_form = VehicleListingForm(instance=listing)
         car_spec_form = CarSpecificationForm()
@@ -142,35 +170,6 @@ def add_details(request, listing_id):
     }
     return render(request, 'users/add_details.html', context)
 
-@user_passes_test(is_owner)
-def edit_details(request, listing_id):
-    listing = get_object_or_404(VehicleListing, pk=listing_id)
-    car_spec_instance = CarSpecification.objects.get(vehicle_listing=listing)
-    inspection_report_instance = InspectionReport.objects.get(vehicle_listing=listing)
-    
-    if request.method == 'POST':
-        vehicle_form = VehicleListingForm(request.POST, instance=listing)
-        car_spec_form = CarSpecificationForm(request.POST, instance=car_spec_instance)
-        inspection_report_form = InspectionReportForm(request.POST, instance=inspection_report_instance)
-        
-        if vehicle_form.is_valid() and car_spec_form.is_valid() and inspection_report_form.is_valid():
-            vehicle_form.save()
-            car_spec_form.save()
-            inspection_report_form.save()
-            messages.success(request, 'Details updated successfully!')
-            return redirect('view-approvals')
-    else:
-        vehicle_form = VehicleListingForm(instance=listing)
-        car_spec_form = CarSpecificationForm(instance=car_spec_instance)
-        inspection_report_form = InspectionReportForm(instance=inspection_report_instance)
-
-    context = {
-        'vehicle_form': vehicle_form,
-        'car_spec_form': car_spec_form,
-        'inspection_report_form': inspection_report_form,
-        'listing': listing,
-    }
-    return render(request, 'users/edit_details.html', context)
 # View to display approved listings on home page
 # View to display approved listings on home page
 def home(request):

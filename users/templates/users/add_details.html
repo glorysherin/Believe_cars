@@ -1,15 +1,158 @@
-<div class="container">
-  <h2>Add Details for {{ listing.brand }} {{ listing.model }} - {{ listing.year }}</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ vehicle_form.as_p }}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Details</title>
+    <style>
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 800px;
+        margin: 50px auto;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      h3 {
+        color: #007bff;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #007bff;
+        display: inline-block;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      .form-section {
+        margin-bottom: 20px;
+      }
+      .form-section .form-group {
+        margin-bottom: 15px;
+      }
+      .form-section label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .form-section input,
+      .form-section select,
+      .form-section textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .radio-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .radio-group img {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+      }
+      .radio-group input {
+        margin-right: 5px;
+      }
+      .radio-group label {
+        display: flex;
+        align-items: center;
+        margin-right: 15px;
+      }
+      .radio-group div {
+        display: flex;
+        align-items: center;
+      }
+      button {
+        padding: 12px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Add Details for {{ listing.brand }} {{ listing.model }} - {{ listing.year }}</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-section">
+          <h3>Vehicle Information</h3>
+          <div class="form-group">{{ vehicle_form.seller_name.label_tag }} {{ vehicle_form.seller_name }}</div>
+          <div class="form-group">{{ vehicle_form.mobile_number.label_tag }} {{ vehicle_form.mobile_number }}</div>
+          <div class="form-group">{{ vehicle_form.brand.label_tag }} {{ vehicle_form.brand }}</div>
+          <div class="form-group">{{ vehicle_form.model.label_tag }} {{ vehicle_form.model }}</div>
+          <div class="form-group">{{ vehicle_form.year.label_tag }} {{ vehicle_form.year }}</div>
+          <div class="form-group">
+            {{ vehicle_form.product_image.label_tag }}
+            {{ vehicle_form.product_image }}
+            {% if vehicle_form.product_image.value %}
+              <div>
+                <a href="{{ vehicle_form.product_image.url }}">View current file</a>
+                <span>|</span>
+                <button type="button" onclick="clearFileInput('id_product_image')">Clear</button>
+              </div>
+            {% endif %}
+          </div>
+          <!-- Repeat similar block for additional images if necessary -->
+          <!-- ... -->
+        </div>
 
-    <h3>Car Specifications</h3>
-    {{ car_spec_form.as_p }}
+        <div class="form-section">
+          <h3>Car Specifications</h3>
+          {{ car_spec_form.as_p }}
+        </div>
 
-    <h3>Inspection Report</h3>
-    {{ inspection_report_form.as_p }}
+        <div class="form-section">
+          <h3>Inspection Report</h3>
+          {% for field in inspection_report_form %}
+            <div class="form-group">
+              <label>{{ field.label_tag }}</label>
+              <div class="radio-group">
+                <label>
+                  <input type="radio" name="{{ field.name }}" value="excellent" />
+                  <img src="{% static 'assets/logo/charm_circle-tick.png' %}" alt="Excellent" /> Tested OK
+                </label>
+                <label>
+                  <input type="radio" name="{{ field.name }}" value="good" />
+                  <img src="{% static 'assets/logo/mdi_car-repair.png' %}" alt="Good" /> Fixed
+                </label>
+                <label>
+                  <input type="radio" name="{{ field.name }}" value="fair" />
+                  <img src="{% static 'assets/logo/gridicons_notice-outline.png' %}" alt="Fair" /> Fair
+                </label>
+                {% comment %} <label><input type="radio" name="{{ field.name }}" value="poor" />Poor</label> {% endcomment %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
 
-    <button type="submit">Submit</button>
-  </form>
-</div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <script>
+      function clearFileInput(id) {
+        document.getElementById(id).value = ''
+      }
+    </script>
+  </body>
+</html>

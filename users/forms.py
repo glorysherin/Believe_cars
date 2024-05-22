@@ -39,9 +39,10 @@ class VehicleListingForm(forms.ModelForm):
         model = VehicleListing
         fields = ['seller_name', 'mobile_number', 'brand', 'model', 'year', 'product_image', 
                   'additional_image1', 'additional_image2', 'additional_image3', 'additional_image4', 
+                   # New field
                   'pitching_price', 'kms_driven', 'fuel_type', 'location', 'condition_description',
                   'registration_year', 'transmission', 'num_owners', 'insurance_type', 
-                  'insurance_validity', 'rto']
+                  'insurance_validity', 'rto','full_details']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -75,6 +76,30 @@ class CarSpecificationForm(forms.ModelForm):
                   'fuel_tank_capacity', 'displacement']
 
 class InspectionReportForm(forms.ModelForm):
+    ENGINE_PERIPHERALS_CHOICES = [
+        ('excellent', 'Excellent'),
+        ('good', 'Good'),
+        ('fair', 'Fair'),
+        ('poor', 'Poor'),
+    ]
+    DRIVETRAIN_CHOICES = [
+        ('excellent', 'Excellent'),
+        ('good', 'Good'),
+        ('fair', 'Fair'),
+        ('poor', 'Poor'),
+    ]
+    # Add more choices as needed
+
+    engine_peripherals = forms.ChoiceField(
+        choices=ENGINE_PERIPHERALS_CHOICES, 
+        widget=forms.RadioSelect(attrs={'class': 'engine-peripherals'})
+    )
+    drivetrain = forms.ChoiceField(
+        choices=DRIVETRAIN_CHOICES, 
+        widget=forms.RadioSelect(attrs={'class': 'drivetrain'})
+    )
+    # Add more fields with radio choices
+
     class Meta:
         model = InspectionReport
         fields = ['engine_peripherals', 'drivetrain', 'body_structure_chassis',
