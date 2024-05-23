@@ -2,9 +2,7 @@
 
 from django.contrib.auth.models import User
 from django.db import models
-# from django.utils import timezone
-import datetime
-import pytz 
+from django.utils import timezone
 
 
 class UserProfile(models.Model):
@@ -41,7 +39,7 @@ class VehicleListing(models.Model):
     star_rating = models.IntegerField(null=True, blank=True)
     condition_description = models.TextField(null=True, blank=True)
     owner_review = models.TextField(null=True, blank=True)
-    uploaded_at = models.DateTimeField(default=datetime.datetime.now(pytz.UTC))
+    uploaded_at = models.DateTimeField(auto_now_add=True)
     registration_year = models.IntegerField()  # Remove default value
     transmission = models.CharField(max_length=50)  # Remove default value
     num_owners = models.IntegerField()  # Remove default value
