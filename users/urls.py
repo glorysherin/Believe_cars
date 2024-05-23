@@ -1,9 +1,9 @@
 # users/urls.py
 from django.urls import path
-from .views import user_views, owner_views
+from .views import user_views, owner_views,landing_views
 
 urlpatterns = [
-    path('', user_views.home, name='home'),
+    path('home', user_views.home, name='home'),
     path('register/', user_views.user_register, name='user-register'),
     path('login/', user_views.user_login, name='user-login'),
     path('logout/', user_views.user_logout, name='user-logout'),
@@ -18,6 +18,7 @@ urlpatterns = [
     path('vehicle/<int:listing_id>/', user_views.view_vehicle, name='view-vehicle'),
     path('owner/view_vehicle/<int:listing_id>/', owner_views.view_vehicle, name='owner-view-vehicle'),
  path('owner/add-details/<int:listing_id>/', owner_views.add_details, name='add-details'),  # New path for add details
+ path('',landing_views.landing_page,name='landing')
 ]
 
 #  path('sell_vehicle/', user_views.sell_vehicle, name='sell_vehicle'),

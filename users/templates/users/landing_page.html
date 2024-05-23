@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Believe Cars - Landing Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <style>
+      /* styles.css */
+      
+      .header-section {
+        background: url('header-bg.jpg') no-repeat center center/cover;
+        color: white;
+        padding: 100px 0;
+      }
+      
+      .how-we-roll img,
+      .featured-cars img,
+      .body-type img {
+        max-width: 100px;
+        margin-bottom: 10px;
+      }
+      
+      .newsletter .form-control {
+        margin-bottom: 10px;
+      }
+      
+      .footer {
+        background-color: #f8f9fa;
+        border-top: 1px solid #e7e7e7;
+      }
+      
+      .footer ul {
+        padding: 0;
+        list-style: none;
+      }
+      
+      .footer ul li {
+        display: inline;
+        margin: 0 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#"><img src="{% static 'logo.png' %}" alt="Believe Cars Logo" style="width: 100px;" /></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Browse Cars</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sell Your Car</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contact Us</a>
+          </li>
+        </ul>
+        <button class="btn btn-primary ml-3">Login</button>
+      </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="header-section text-center">
+      <div class="container">
+        <h1>Buy, Sell from a whole new network of cars</h1>
+        <button class="btn btn-success">Get Started</button>
+      </div>
+    </header>
+
+    <!-- How We Roll Section -->
+    <section class="how-we-roll text-center py-5">
+      <div class="container">
+        <h2>How We Roll</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <img src="{% static 'assets/images/img1.png' %}" alt="Step 1" />
+            <p>Easy step-by-step process</p>
+          </div>
+          <div class="col-md-4">
+            <img src="{% static 'assets/images/img2.png' %}" alt="Step 2" />
+            <p>Wide range of cars</p>
+          </div>
+          <div class="col-md-4">
+            <img src="{% static 'assets/images/img3.png' %}" alt="Step 3" />
+            <p>Best financing options</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Financing Section -->
+    <section class="financing text-center py-5 bg-light">
+      <div class="container">
+        <h2>Financing made possible for every car buyer</h2>
+        <button class="btn btn-danger">Open Subsidy</button>
+      </div>
+    </section>
+
+    <!-- Featured Cars Section -->
+    <section class="featured-cars text-center py-5">
+      <div class="container">
+        <h2>Featured Cars</h2>
+        <div class="row">
+          <div class="col-md-3">
+            <img src="{% static 'assets/images/car_img1.png' %}" alt="Car 1" />
+            <p>Maruti Suzuki Swift</p>
+          </div>
+          <div class="col-md-3">
+            <img src="{% static 'assets/images/car2.png' %}" alt="Car 2" />
+            <p>Hyundai i20</p>
+          </div>
+          <div class="col-md-3">
+            <img src="{% static 'assets/images/car3.png' %}" alt="Car 3" />
+            <p>Honda City</p>
+          </div>
+          <div class="col-md-3">
+            <img src="{% static 'assets/images/car4.png' %}" alt="Car 4" />
+            <p>Toyota Innova</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Body Type Section -->
+    <section class="body-type text-center py-5 bg-light">
+      <div class="container">
+        <h2>Browse by Body Type</h2>
+        <div class="row">
+          <div class="col-md-2">
+            <img src="{% static 'assets/images/img1.png' %}" alt="Sedan" />
+            <p>Sedan</p>
+          </div>
+          <div class="col-md-2">
+            <img src="{% static 'assets/images/img1.png' %}" alt="Hatchback" />
+            <p>Hatchback</p>
+          </div>
+          <div class="col-md-2">
+            <img src="{% static 'assets/images/img1.png' %}" alt="SUV" />
+            <p>SUV</p>
+          </div>
+          <div class="col-md-2">
+            <img src="{% static 'assets/images/img1.png' %}" alt="Premium Sedan" />
+            <p>Premium Sedan</p>
+          </div>
+          <div class="col-md-2">
+            <img src="{% static 'assets/images/img1.png' %}" alt="Premium SUV" />
+            <p>Premium SUV</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter text-center py-5">
+      <div class="container">
+        <h2>Partner with us and Earn money Hassle-free</h2>
+        <form class="form-inline justify-content-center">
+          <input type="email" class="form-control mb-2 mr-sm-2" placeholder="Email Address" />
+          <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Mobile Number" />
+          <button type="submit" class="btn btn-primary mb-2">Register Now</button>
+        </form>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="whatsappUpdates" />
+          <label class="form-check-label" for="whatsappUpdates">Get updates on WhatsApp</label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer text-center py-4">
+      <div class="container">
+        <p>&copy; 2024 Believe Cars. All rights reserved.</p>
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a href="#">About Us</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">Contact Us</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">Terms of Service</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#">Privacy Policy</a>
+          </li>
+        </ul>
+        <p>Phone: 123-456-7890</p>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
