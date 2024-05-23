@@ -13,11 +13,11 @@ urlpatterns = [
     path('sell-vehicle/', user_views.sell_vehicle, name='sell-vehicle'),
     path('owner/view-approvals/', owner_views.view_approvals, name='view-approvals'),
     path('owner/approve-listing/<int:listing_id>/', owner_views.approve_listing, name='approve-listing'),
+
     path('owner/reject-listing/<int:listing_id>/', owner_views.reject_listing, name='reject-listing'),
     path('vehicle/<int:listing_id>/', user_views.view_vehicle, name='view-vehicle'),
     path('owner/view_vehicle/<int:listing_id>/', owner_views.view_vehicle, name='owner-view-vehicle'),
  path('owner/add-details/<int:listing_id>/', owner_views.add_details, name='add-details'),  # New path for add details
- path('owner/add-details/<int:listing_id>/', owner_views.add_details, name='add-details'),
 ]
 
 #  path('sell_vehicle/', user_views.sell_vehicle, name='sell_vehicle'),

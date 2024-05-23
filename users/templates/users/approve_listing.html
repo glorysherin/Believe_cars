@@ -1,3 +1,5 @@
+<!-- approve_listing.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,12 +17,14 @@
       <h3>{{ listing.brand }} {{ listing.model }} - {{ listing.year }}</h3>
       <form method="post">
         {% csrf_token %}
+
         <label for="star_rating">Star Rating:</label>
         <input type="number" id="star_rating" name="star_rating" min="1" max="5" required />
         <br />
         <label for="owner_review">Owner Review:</label>
         <textarea id="owner_review" name="owner_review" rows="4" cols="50"></textarea>
         <br />
+
         <button type="submit">Approve</button>
       </form>
     </div>

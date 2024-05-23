@@ -88,12 +88,17 @@
       button:hover {
         background-color: #0056b3;
       }
+      .image-preview {
+        margin-top: 10px;
+        max-width: 100%;
+        height: auto;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h2>Add Details for {{ listing.brand }} {{ listing.model }} - {{ listing.year }}</h2>
-      <form method="post" enctype="multipart/form-data">
+      <form method="post" enctype="multipart/form-data" action="{% url 'approve-listing' listing.id %}">
         {% csrf_token %}
         <div class="form-section">
           <h3>Vehicle Information</h3>
@@ -102,19 +107,69 @@
           <div class="form-group">{{ vehicle_form.brand.label_tag }} {{ vehicle_form.brand }}</div>
           <div class="form-group">{{ vehicle_form.model.label_tag }} {{ vehicle_form.model }}</div>
           <div class="form-group">{{ vehicle_form.year.label_tag }} {{ vehicle_form.year }}</div>
+
           <div class="form-group">
             {{ vehicle_form.product_image.label_tag }}
             {{ vehicle_form.product_image }}
-            {% if vehicle_form.product_image.value %}
+            {% if listing.product_image %}
               <div>
-                <a href="{{ vehicle_form.product_image.url }}">View current file</a>
+                <a href="{{ listing.product_image.url }}">View current file</a>
                 <span>|</span>
                 <button type="button" onclick="clearFileInput('id_product_image')">Clear</button>
               </div>
+              <img class="image-preview" id="product_image_preview" src="{{ listing.product_image.url }}" alt="Product Image" />
             {% endif %}
           </div>
-          <!-- Repeat similar block for additional images if necessary -->
-          <!-- ... -->
+
+          <!-- Additional Images -->
+          <div class="form-group">
+            {{ vehicle_form.additional_image1.label_tag }}
+            {{ vehicle_form.additional_image1 }}
+            {% if listing.additional_image1 %}
+              <div>
+                <a href="{{ listing.additional_image1.url }}">View current file</a>
+                <span>|</span>
+                <button type="button" onclick="clearFileInput('id_additional_image1')">Clear</button>
+              </div>
+              <img class="image-preview" id="additional_image1_preview" src="{{ listing.additional_image1.url }}" alt="Additional Image 1" />
+            {% endif %}
+          </div>
+          <div class="form-group">
+            {{ vehicle_form.additional_image2.label_tag }}
+            {{ vehicle_form.additional_image2 }}
+            {% if listing.additional_image2 %}
+              <div>
+                <a href="{{ listing.additional_image2.url }}">View current file</a>
+                <span>|</span>
+                <button type="button" onclick="clearFileInput('id_additional_image2')">Clear</button>
+              </div>
+              <img class="image-preview" id="additional_image2_preview" src="{{ listing.additional_image2.url }}" alt="Additional Image 2" />
+            {% endif %}
+          </div>
+          <div class="form-group">
+            {{ vehicle_form.additional_image3.label_tag }}
+            {{ vehicle_form.additional_image3 }}
+            {% if listing.additional_image3 %}
+              <div>
+                <a href="{{ listing.additional_image3.url }}">View current file</a>
+                <span>|</span>
+                <button type="button" onclick="clearFileInput('id_additional_image3')">Clear</button>
+              </div>
+              <img class="image-preview" id="additional_image3_preview" src="{{ listing.additional_image3.url }}" alt="Additional Image 3" />
+            {% endif %}
+          </div>
+          <div class="form-group">
+            {{ vehicle_form.additional_image4.label_tag }}
+            {{ vehicle_form.additional_image4 }}
+            {% if listing.additional_image4 %}
+              <div>
+                <a href="{{ listing.additional_image4.url }}">View current file</a>
+                <span>|</span>
+                <button type="button" onclick="clearFileInput('id_additional_image4')">Clear</button>
+              </div>
+              <img class="image-preview" id="additional_image4_preview" src="{{ listing.additional_image4.url }}" alt="Additional Image 4" />
+            {% endif %}
+          </div>
         </div>
 
         <div class="form-section">
@@ -140,19 +195,51 @@
                   <input type="radio" name="{{ field.name }}" value="fair" />
                   <img src="{% static 'assets/logo/gridicons_notice-outline.png' %}" alt="Fair" /> Fair
                 </label>
-                {% comment %} <label><input type="radio" name="{{ field.name }}" value="poor" />Poor</label> {% endcomment %}
               </div>
             </div>
           {% endfor %}
         </div>
 
-        <button type="submit">Submit</button>
+        <a href="{% url 'approve-listing' listing.id %}" class="approve-link">Approve</a>
       </form>
     </div>
     <script>
       function clearFileInput(id) {
         document.getElementById(id).value = ''
       }
+      
+      // Function to handle file input change and update image preview
+      function updateImagePreview(input, previewId) {
+        if (input.files && input.files[0]) {
+          const reader = new FileReader()
+          reader.onload = function (e) {
+            const preview = document.getElementById(previewId)
+            preview.src = e.target.result
+          }
+          reader.readAsDataURL(input.files[0])
+        }
+      }
+      
+      // Add event listeners for file inputs
+      document.getElementById('id_product_image').addEventListener('change', function () {
+        updateImagePreview(this, 'product_image_preview')
+      })
+      
+      document.getElementById('id_additional_image1').addEventListener('change', function () {
+        updateImagePreview(this, 'additional_image1_preview')
+      })
+      
+      document.getElementById('id_additional_image2').addEventListener('change', function () {
+        updateImagePreview(this, 'additional_image2_preview')
+      })
+      
+      document.getElementById('id_additional_image3').addEventListener('change', function () {
+        updateImagePreview(this, 'additional_image3_preview')
+      })
+      
+      document.getElementById('id_additional_image4').addEventListener('change', function () {
+        updateImagePreview(this, 'additional_image4_preview')
+      })
     </script>
   </body>
 </html>

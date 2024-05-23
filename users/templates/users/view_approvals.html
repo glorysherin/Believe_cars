@@ -11,7 +11,6 @@
         margin: 0;
         padding: 0;
       }
-      
       .container {
         width: 80%;
         margin: 20px auto;
@@ -21,48 +20,40 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         overflow-x: auto; /* Enable horizontal scroll if needed */
       }
-      
       h2 {
         color: #333;
         margin-bottom: 20px;
         text-align: center;
       }
-      
       table {
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 20px; /* Added spacing between table and bottom content */
       }
-      
       th,
       td {
         padding: 12px;
         text-align: left;
         border-bottom: 1px solid #ddd;
       }
-      
       th {
         background-color: #f2f2f2;
         color: #333;
       }
-      
       td {
         background-color: #fff;
         color: #555;
         vertical-align: middle; /* Center content vertically */
       }
-      
       img {
         max-width: 100%;
         height: auto; /* Maintain aspect ratio */
         border-radius: 6px;
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
       }
-      
       .action-links {
         white-space: nowrap; /* Prevent line break for action links */
       }
-      
       .action-links a {
         display: inline-block;
         text-decoration: none;
@@ -72,23 +63,15 @@
         color: #fff;
         cursor: pointer;
       }
-      
       .approve-link {
         background-color: #5cb85c;
       }
-      
       .reject-link {
         background-color: #d9534f;
       }
-      
       .add-details-link {
         background-color: #007bff;
       }
-      
-      .edit-details-link {
-        background-color: #ffc107;
-      }
-      
       /* Responsive adjustments */
       @media only screen and (max-width: 768px) {
         .container {
@@ -102,11 +85,29 @@
           padding: 4px 8px; /* Smaller padding for action links */
         }
       }
+      .messages {
+        margin-bottom: 20px;
+      }
+      .messages .success {
+        color: green;
+        font-weight: bold;
+      }
+      .messages .error {
+        color: red;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h2>Pending Approvals</h2>
+      <div class="messages">
+        {% if messages %}
+          {% for message in messages %}
+            <div class="{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      </div>
       <table>
         <thead>
           <tr>

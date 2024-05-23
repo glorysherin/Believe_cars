@@ -61,20 +61,13 @@ def sell_vehicle(request):
     if request.method == 'POST':
         form = VehicleListingForm(request.POST, request.FILES)
         if form.is_valid():
-            # Save the form data after modifying any necessary fields
             listing = form.save(commit=False)
-            listing.seller = request.user  # Assuming you have a seller field in your model
-            # Handle insurance_validity separately (if needed)
-            insurance_validity = request.POST.get('insurance_validity')
-            # Further processing if necessary, then save
+            listing.seller = request.user
+            listing.is_approved = False  # Mark as pending approval
             listing.save()
-            
-            # Redirect to home page after successful submission
-            return redirect('home')  # Adjust the URL name as per your project
-
+            return redirect('home')
     else:
         form = VehicleListingForm()
-    
     return render(request, 'users/sell_vehicle.html', {'form': form})
 
 def view_vehicle(request, listing_id):

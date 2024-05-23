@@ -137,8 +137,8 @@
           <img id="main-image" src="{{ listing.product_image.url }}" alt="Main Vehicle Image" />
           <div class="thumbnails">
             <img src="{{ listing.product_image.url }}" alt="Thumbnail" onclick="changeImage(this)" />
-            {% for image in listing.images.all %}
-              <img src="{{ image.image.url }}" alt="Thumbnail" onclick="changeImage(this)" />
+            {% for image in listing.additional_images.all %}
+              <img src="{{ image.url }}" alt="Thumbnail" onclick="changeImage(this)" />
             {% endfor %}
           </div>
         </div>
@@ -162,7 +162,7 @@
               <strong>Owner Rating:</strong> {{ listing.star_rating }} / 5
             </li>
             <li>
-              <strong>Number of Owners</strong>{{ listing.num_owners }}
+              <strong>Number of Owners:</strong> {{ listing.num_owners }}
             </li>
           </ul>
           <a href="#" class="btn">Book Now</a>
