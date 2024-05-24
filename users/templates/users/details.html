@@ -1,0 +1,37 @@
+<!-- car_details.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Car Details</title>
+  </head>
+  <body>
+    <h1>Car Details</h1>
+    <ul>
+      <li>Mileage: {{ car_details.mileage_ara }}</li>
+      <li>Boot Space: {{ car_details.boot_space }}</li>
+      <li>Ground Clearance: {{ car_details.ground_clearance }}</li>
+      <li>Seating Capacity: {{ car_details.seating_capacity }}</li>
+      <li>Fuel Tank Capacity: {{ car_details.fuel_tank_capacity }}</li>
+      <li>Displacement: {{ car_details.displacement }}</li>
+      <li>Engine Peripherals: {{ car_details.engine_peripherals }}</li>
+      <li>Drivetrain: {{ car_details.drivetrain }}</li>
+      <li>Body Structure Chassis: {{ car_details.body_structure_chassis }}</li>
+      <li>Exterior: {{ car_details.exterior }}</li>
+      <li>Interior: {{ car_details.interior }}</li>
+      <li>Mechanical: {{ car_details.mechanical }}</li>
+      <li>Wheels Tyres: {{ car_details.wheels_tyres }}</li>
+      <li>Full Details: {{ car_details.full_details }}</li>
+      <li>Star Rating: {{ car_details.star_rating }}</li>
+      <li>Owner Review: {{ car_details.owner_review }}</li>
+      <li>
+        Approved:{% if car_details.is_approved %}
+          Yes
+        {% else %}
+          No
+        {% endif %}
+      </li>
+    </ul>
+    <a href="{% url 'add-details' listing_id=car_details.vehicle_listing.id %}">Edit Details</a>
+  </body>
+</html>

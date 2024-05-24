@@ -1,3 +1,5 @@
+<!-- view_vehicle.html -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -159,7 +161,14 @@
               <strong>Uploaded At:</strong> {{ listing.uploaded_at }}
             </li>
             <li>
-              <strong>Owner Rating:</strong> {{ listing.star_rating }} / 5
+              <strong>Owner Rating:</strong>
+              {% if car_details.star_rating %}
+                {% for i in 'x'|rjust:car_details.star_rating|default:'0' %}
+                  <span class="star-ratings">★</span>
+                {% endfor %}
+              {% else %}
+                No rating
+              {% endif %}({{ car_details.star_rating }} / 5)
             </li>
             <li>
               <strong>Number of Owners:</strong> {{ listing.num_owners }}
@@ -175,18 +184,84 @@
         </div>
         <div id="description" class="tab-content active">{{ listing.condition_description }}</div>
         <div id="reviews" class="tab-content">
-          {% if listing.star_rating %}
+          {% if car_details.star_rating %}
             <p>
               <strong>Rating:</strong>
-              {% for i in 'x'|rjust:listing.star_rating %}
+              {% for i in 'x'|rjust:car_details.star_rating|default:'0' %}
                 <span class="star-ratings">★</span>
               {% endfor %}
             </p>
           {% endif %}
-          <p>{{ listing.owner_review }}</p>
+          <p>{{ car_details.owner_review }}</p>
         </div>
       </div>
+
+      <!-- Car Details Section -->
+      {% if car_details %}
+        <div class="car-details-section">
+          <h2>Car Details</h2>
+          <ul>
+            <li>
+              <strong>Mileage:</strong> {{ car_details.mileage_ara }}
+            </li>
+            <li>
+              <strong>Boot Space:</strong> {{ car_details.boot_space }}
+            </li>
+            <li>
+              <strong>Ground Clearance:</strong> {{ car_details.ground_clearance }}
+            </li>
+            <li>
+              <strong>Seating Capacity:</strong> {{ car_details.seating_capacity }}
+            </li>
+            <li>
+              <strong>Fuel Tank Capacity:</strong> {{ car_details.fuel_tank_capacity }}
+            </li>
+            <li>
+              <strong>Displacement:</strong> {{ car_details.displacement }}
+            </li>
+            <li>
+              <strong>Engine Peripherals:</strong> {{ car_details.engine_peripherals }}
+            </li>
+            <li>
+              <strong>Drivetrain:</strong> {{ car_details.drivetrain }}
+            </li>
+            <li>
+              <strong>Body Structure Chassis:</strong> {{ car_details.body_structure_chassis }}
+            </li>
+            <li>
+              <strong>Exterior:</strong> {{ car_details.exterior }}
+            </li>
+            <li>
+              <strong>Interior:</strong> {{ car_details.interior }}
+            </li>
+            <li>
+              <strong>Mechanical:</strong> {{ car_details.mechanical }}
+            </li>
+            <li>
+              <strong>Wheels Tyres:</strong> {{ car_details.wheels_tyres }}
+            </li>
+            <li>
+              <strong>Full Details:</strong> {{ car_details.full_details }}
+            </li>
+            <li>
+              <strong>Star Rating:</strong> {{ car_details.star_rating }}
+            </li>
+            <li>
+              <strong>Owner Review:</strong> {{ car_details.owner_review }}
+            </li>
+            <li>
+              <strong>Approved:</strong> {% if car_details.is_approved %}
+                Yes
+              {% else %}
+                No
+              {% endif %}
+            </li>
+          </ul>
+          <a href="{% url 'add-details' listing_id=listing.id %}">Edit Details</a>
+        </div>
+      {% endif %}
     </div>
+
     <script>
       function changeImage(thumbnail) {
         const mainImage = document.getElementById('main-image')

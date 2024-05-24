@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
 from users.forms import UserRegisterForm, UserLoginForm,VehicleListingForm
-from users.models import UserProfile,VehicleListing
+from users.models import UserProfile,VehicleListing,CarDetails
 
 def home(request):
     approved_listings = VehicleListing.objects.filter(is_approved=True).order_by('-uploaded_at')
@@ -70,6 +70,11 @@ def sell_vehicle(request):
         form = VehicleListingForm()
     return render(request, 'users/sell_vehicle.html', {'form': form})
 
+# def view_vehicle(request, listing_id):
+#     listing = get_object_or_404(VehicleListing, id=listing_id)
+#     return render(request, 'users/view_vehicle.html', {'listing': listing})
+
 def view_vehicle(request, listing_id):
     listing = get_object_or_404(VehicleListing, id=listing_id)
-    return render(request, 'users/view_vehicle.html', {'listing': listing})
+    car_details = CarDetails.objects.filter(vehicle_listing=listing).first()  # Fetch car details associated with the listing
+    return render(request, 'users/view_vehicle.html', {'listing': listing, 'car_details': car_details})

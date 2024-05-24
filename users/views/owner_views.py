@@ -4,13 +4,15 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.models import User
-from users.forms import OwnerLoginForm,VehicleListingForm,CarSpecificationForm, InspectionReportForm
+from users.forms import OwnerLoginForm,VehicleListingForm
 import openpyxl
 from django.http import HttpResponse
-from users.models import UserProfile,CarSpecification  ,InspectionReport
+from users.models import UserProfile
 from django.db import transaction
-
-import openpyxl
+from users.forms import CarDetailsForm,ApprovalForm
+from django.http import HttpResponse, Http404
+from users.forms import CarDetailsForm
+from users.models import CarDetails
 from django.shortcuts import render, redirect,get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import user_passes_test
@@ -88,21 +90,21 @@ def view_approvals(request):
     return render(request, 'users/view_approvals.html', context)
 
 
-@user_passes_test(is_owner)
-def approve_listing(request, listing_id):
-    listing = get_object_or_404(VehicleListing, id=listing_id)
-    if request.method == 'POST':
-        star_rating = request.POST.get('star_rating')
-        owner_review = request.POST.get('owner_review')
-        listing.star_rating = star_rating
-        listing.owner_review = owner_review
-        listing.is_approved = True
-        listing.save()
-        # Optionally, you can add a success message here
-        # return redirect('view-approvals')
-        return redirect('owner-home')  # Redirect to 'owner-home' URL
+# @user_passes_test(is_owner)
+# def approve_listing(request, listing_id):
+#     listing = get_object_or_404(VehicleListing, id=listing_id)
+#     if request.method == 'POST':
+#         star_rating = request.POST.get('star_rating')
+#         owner_review = request.POST.get('owner_review')
+#         listing.star_rating = star_rating
+#         listing.owner_review = owner_review
+#         listing.is_approved = True
+#         listing.save()
+#         # Optionally, you can add a success message here
+#         # return redirect('view-approvals')
+#         return redirect('owner-home')  # Redirect to 'owner-home' URL
 
-    return render(request, 'users/approve_listing.html', {'listing': listing})
+#     return render(request, 'users/approve_listing.html', {'listing': listing})
 
 @user_passes_test(is_owner)
 def reject_listing(request, listing_id):
@@ -111,61 +113,8 @@ def reject_listing(request, listing_id):
     messages.success(request, 'Listing has been rejected and deleted.')
     return redirect('view-approvals')
 
-@user_passes_test(is_owner)
-def add_details(request, listing_id):
-    listing = get_object_or_404(VehicleListing, pk=listing_id)
-    
-    try:
-        car_spec = listing.car_spec
-    except CarSpecification.DoesNotExist:
-        car_spec = None
-    
-    try:
-        inspection_report = listing.inspection_report
-    except InspectionReport.DoesNotExist:
-        inspection_report = None
 
-    if request.method == 'POST':
-        vehicle_form = VehicleListingForm(request.POST, request.FILES, instance=listing)
-        car_spec_form = CarSpecificationForm(request.POST, instance=car_spec)
-        inspection_report_form = InspectionReportForm(request.POST, instance=inspection_report)
-        
-        if vehicle_form.is_valid() and car_spec_form.is_valid() and inspection_report_form.is_valid():
-            try:
-                with transaction.atomic():
-                    vehicle_form.save()
-                    
-                    car_spec = car_spec_form.save(commit=False)
-                    car_spec.vehicle_listing = listing
-                    car_spec.save()
-                    
-                    inspection_report = inspection_report_form.save(commit=False)
-                    inspection_report.vehicle_listing = listing
-                    inspection_report.save()
 
-                    messages.success(request, 'Details added successfully.')
-                    # Redirect to approve listing page with the listing_id
-                    return redirect('approve-listing', listing_id=listing.id)
-            except Exception as e:
-                messages.error(request, f'Error occurred: {str(e)}')
-        else:
-            messages.error(request, 'Please correct the errors below.')
-    else:
-        vehicle_form = VehicleListingForm(instance=listing)
-        car_spec_form = CarSpecificationForm(instance=car_spec)
-        inspection_report_form = InspectionReportForm(instance=inspection_report)
-
-    context = {
-        'listing': listing,
-        'vehicle_form': vehicle_form,
-        'car_spec_form': car_spec_form,
-        'inspection_report_form': inspection_report_form,
-    }
-
-    return render(request, 'users/add_details.html', context)
-
-# View to display approved listings on home page
-# View to display approved listings on home page
 def home(request):
     approved_listings = VehicleListing.objects.filter(is_approved=True).order_by('-uploaded_at')
     context = {
@@ -184,3 +133,126 @@ def view_vehicle(request, listing_id):
 #         'listing': listing
 #     }
 #     return render(request, 'users/view_vehicle.html', context)
+
+@user_passes_test(is_owner)
+def add_details(request, listing_id):
+    listing = get_object_or_404(VehicleListing, id=listing_id)
+
+    if request.method == 'POST':
+        form = CarDetailsForm(request.POST)
+        if form.is_valid():
+            car_details = form.save(commit=False)
+            car_details.vehicle_listing = listing
+            car_details.star_rating = request.POST.get('star_rating')  # Add star rating
+            car_details.owner_review = request.POST.get('owner_review')  # Add owner review
+            car_details.save()
+            listing.is_approved = True  # Update the listing approval status if needed
+            listing.save()
+            return redirect('view-approvals')  # Redirect to approvals page after submission
+    else:
+        form = CarDetailsForm()
+
+    context = {
+        'form': form,
+        'listing': listing
+    }
+    return render(request, 'users/add_details.html', context)
+# @user_passes_test(is_owner)
+# def success(request):
+#     return render(request, 'users/success.html')
+
+@user_passes_test(is_owner)
+def submit_details(request, listing_id):
+    # Fetch the listing object based on listing_id
+    listing = get_object_or_404(VehicleListing, id=listing_id)
+
+    if request.method == 'POST':
+        # Process form data
+        listing.mileage = request.POST.get('mileage')
+        listing.boot_space = request.POST.get('boot_space')
+        listing.ground_clearance = request.POST.get('ground_clearance')
+        listing.seating_capacity = request.POST.get('seating_capacity')
+        listing.fuel_tank_capacity = request.POST.get('fuel_tank_capacity')
+        listing.displacement = request.POST.get('displacement')
+        
+        listing.engine_peripherals = request.POST.get('engine_peripherals')
+        listing.drivetrain = request.POST.get('drivetrain')
+        listing.body_structure = request.POST.get('body_structure')
+        listing.exterior = request.POST.get('exterior')
+        listing.interior = request.POST.get('interior')
+        listing.mechanical = request.POST.get('mechanical')
+        listing.wheels_tyres = request.POST.get('wheels_tyres')
+        
+        # Save the updated listing object
+        listing.save()
+
+        # Redirect to a success page or back to the view approvals page
+        return redirect('view-approvals')
+
+    # Render the add details form template for GET requests
+    context = {
+        'listing': listing,
+    }
+    return render(request, 'add_details.html', context)
+
+
+
+
+def car_details_view(request, car_details_id):
+    car_details = get_object_or_404(CarDetails, id=car_details_id)
+    return render(request, 'users/details.html', {'car_details': car_details})
+# def save_details(request, listing_id):
+#     listing = get_object_or_404(Listing, pk=listing_id)
+    
+#     if request.method == 'POST':
+#         # Extract data from POST request
+#         mileage = request.POST.get('mileage')
+#         boot_space = request.POST.get('boot_space')
+#         ground_clearance = request.POST.get('ground_clearance')
+#         seating_capacity = request.POST.get('seating_capacity')
+#         fuel_tank_capacity = request.POST.get('fuel_tank_capacity')
+#         displacement = request.POST.get('displacement')
+        
+#         engine_peripherals = request.POST.get('engine_peripherals')
+#         drivetrain = request.POST.get('drivetrain')
+#         body_structure = request.POST.get('body_structure')
+#         exterior = request.POST.get('exterior')
+#         interior = request.POST.get('interior')
+#         mechanical = request.POST.get('mechanical')
+#         wheels_tyres = request.POST.get('wheels_tyres')
+        
+#         # Save the details in your model (for example, SavedDetails model)
+#         saved_details = SavedDetails.objects.create(
+#             listing=listing,
+#             mileage=mileage,
+#             boot_space=boot_space,
+#             ground_clearance=ground_clearance,
+#             seating_capacity=seating_capacity,
+#             fuel_tank_capacity=fuel_tank_capacity,
+#             displacement=displacement,
+#             engine_peripherals=engine_peripherals,
+#             drivetrain=drivetrain,
+#             body_structure=body_structure,
+#             exterior=exterior,
+#             interior=interior,
+#             mechanical=mechanical,
+#             wheels_tyres=wheels_tyres
+#         )
+        
+#         # Redirect to the approve listing page
+#         return redirect('approve-listing')
+    
+#     # If not POST request, render the form
+#     context = {
+#         'listing': listing,
+#     }
+#     return render(request, 'add_details.html', context)
+
+# def approve_listing(request):
+#     # Fetch all saved details to display in approve-listing.html
+#     saved_details = SavedDetails.objects.all()  # Query as per your SavedDetails model
+    
+#     context = {
+#         'saved_details': saved_details,
+#     }
+#     return render(request, 'approve-listing.html', context)

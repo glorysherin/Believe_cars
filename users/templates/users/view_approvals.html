@@ -172,10 +172,15 @@
               <td>{{ listing.insurance_type }}</td>
               <td>{{ listing.insurance_validity }}</td>
               <td>{{ listing.rto }}</td>
-              <td class="action-links">
+              {% comment %} <td class="action-links">
                 <a href="{% url 'approve-listing' listing.id %}" class="approve-link">Approve</a>
                 <a href="{% url 'reject-listing' listing.id %}" class="reject-link">Reject</a>
-                <a href="{% url 'add-details' listing.id %}" class="add-details-link">Add Details</a>
+                <a href="{% url 'add_details' %}" class="add-details-link">Add Details</a>
+              </td> {% endcomment %}
+              <td class="action-links">
+                <a href="{% url 'reject-listing' listing.id %}" class="reject-link">Reject</a>
+                <a href="{% url 'add-details' listing.id %}">Add Details</a>
+                {% comment %} <a href="{% url 'users:add-details' listing.id %}" class="add-details-link">Add Details</a> {% endcomment %}
               </td>
             </tr>
           {% endfor %}

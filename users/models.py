@@ -56,20 +56,13 @@ class VehicleListing(models.Model):
     def get_pending_approvals():
         return VehicleListing.objects.filter(is_approved=False)
 
-class CarSpecification(models.Model):
-    vehicle_listing = models.OneToOneField(VehicleListing, on_delete=models.CASCADE, related_name='car_spec')
-    mileage_arai = models.CharField(max_length=50)
-    boot_space = models.CharField(max_length=50)
-    ground_clearance = models.CharField(max_length=50)
-    seating_capacity = models.CharField(max_length=50)
-    fuel_tank_capacity = models.CharField(max_length=50)
-    displacement = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f"Specifications for {self.vehicle_listing.brand} {self.vehicle_listing.model} - {self.vehicle_listing.year}"
-
-class InspectionReport(models.Model):
-    vehicle_listing = models.OneToOneField(VehicleListing, on_delete=models.CASCADE, related_name='inspection_report')
+class CarDetails(models.Model):
+    mileage_ara = models.DecimalField(max_digits=10, decimal_places=2)
+    boot_space = models.DecimalField(max_digits=10, decimal_places=2)
+    ground_clearance = models.DecimalField(max_digits=10, decimal_places=2)
+    seating_capacity = models.IntegerField()
+    fuel_tank_capacity = models.DecimalField(max_digits=10, decimal_places=2)
+    displacement = models.DecimalField(max_digits=10, decimal_places=2)
     engine_peripherals = models.TextField()
     drivetrain = models.TextField()
     body_structure_chassis = models.TextField()
@@ -77,7 +70,38 @@ class InspectionReport(models.Model):
     interior = models.TextField()
     mechanical = models.TextField()
     wheels_tyres = models.TextField()
+    full_details = models.TextField()
+    is_approved = models.BooleanField(default=False)
+    star_rating = models.IntegerField(null=True, blank=True)
+    owner_review = models.TextField(null=True, blank=True)
 
+
+    vehicle_listing = models.ForeignKey(VehicleListing, on_delete=models.CASCADE,null=True, blank=True)
 
     def __str__(self):
-        return f"Inspection Report for {self.vehicle_listing.brand} {self.vehicle_listing.model} - {self.vehicle_listing.year}"
+        return f"Car Details {self.id}"
+# class CarSpecification(models.Model):
+#     vehicle_listing = models.OneToOneField(VehicleListing, on_delete=models.CASCADE, related_name='car_spec')
+#     mileage_arai = models.CharField(max_length=50)
+#     boot_space = models.CharField(max_length=50)
+#     ground_clearance = models.CharField(max_length=50)
+#     seating_capacity = models.CharField(max_length=50)
+#     fuel_tank_capacity = models.CharField(max_length=50)
+#     displacement = models.CharField(max_length=50)
+
+#     def __str__(self):
+#         return f"Specifications for {self.vehicle_listing.brand} {self.vehicle_listing.model} - {self.vehicle_listing.year}"
+
+# class InspectionReport(models.Model):
+#     vehicle_listing = models.OneToOneField(VehicleListing, on_delete=models.CASCADE, related_name='inspection_report')
+#     engine_peripherals = models.TextField()
+#     drivetrain = models.TextField()
+#     body_structure_chassis = models.TextField()
+#     exterior = models.TextField()
+#     interior = models.TextField()
+#     mechanical = models.TextField()
+#     wheels_tyres = models.TextField()
+
+
+#     def __str__(self):
+#         return f"Inspection Report for {self.vehicle_listing.brand} {self.vehicle_listing.model} - {self.vehicle_listing.year}"

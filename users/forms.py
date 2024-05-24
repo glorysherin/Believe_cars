@@ -2,7 +2,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile,VehicleListing,CarSpecification, InspectionReport, VehicleListing
+from .models import UserProfile,VehicleListing
+from .models import CarDetails
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -68,39 +69,50 @@ class VehicleListingForm(forms.ModelForm):
 
         return cleaned_data
     
+
+
+class CarDetailsForm(forms.ModelForm):
+    class Meta:
+        model = CarDetails
+        fields = '__all__'  # Use all fields from the CarDetails model
+
+class ApprovalForm(forms.ModelForm):
+    class Meta:
+        model = CarDetails
+        fields = []
     
-class CarSpecificationForm(forms.ModelForm):
-    class Meta:
-        model = CarSpecification
-        fields = ['mileage_arai', 'boot_space', 'ground_clearance', 'seating_capacity',
-                  'fuel_tank_capacity', 'displacement']
+# class CarSpecificationForm(forms.ModelForm):
+#     class Meta:
+#         model = CarSpecification
+#         fields = ['mileage_arai', 'boot_space', 'ground_clearance', 'seating_capacity',
+#                   'fuel_tank_capacity', 'displacement']
 
-class InspectionReportForm(forms.ModelForm):
-    ENGINE_PERIPHERALS_CHOICES = [
-        ('excellent', 'Excellent'),
-        ('good', 'Good'),
-        ('fair', 'Fair'),
-        ('poor', 'Poor'),
-    ]
-    DRIVETRAIN_CHOICES = [
-        ('excellent', 'Excellent'),
-        ('good', 'Good'),
-        ('fair', 'Fair'),
-        ('poor', 'Poor'),
-    ]
-    # Add more choices as needed
+# class InspectionReportForm(forms.ModelForm):
+#     ENGINE_PERIPHERALS_CHOICES = [
+#         ('excellent', 'Excellent'),
+#         ('good', 'Good'),
+#         ('fair', 'Fair'),
+#         ('poor', 'Poor'),
+#     ]
+#     DRIVETRAIN_CHOICES = [
+#         ('excellent', 'Excellent'),
+#         ('good', 'Good'),
+#         ('fair', 'Fair'),
+#         ('poor', 'Poor'),
+#     ]
+#     # Add more choices as needed
 
-    engine_peripherals = forms.ChoiceField(
-        choices=ENGINE_PERIPHERALS_CHOICES, 
-        widget=forms.RadioSelect(attrs={'class': 'engine-peripherals'})
-    )
-    drivetrain = forms.ChoiceField(
-        choices=DRIVETRAIN_CHOICES, 
-        widget=forms.RadioSelect(attrs={'class': 'drivetrain'})
-    )
-    # Add more fields with radio choices
+#     engine_peripherals = forms.ChoiceField(
+#         choices=ENGINE_PERIPHERALS_CHOICES, 
+#         widget=forms.RadioSelect(attrs={'class': 'engine-peripherals'})
+#     )
+#     drivetrain = forms.ChoiceField(
+#         choices=DRIVETRAIN_CHOICES, 
+#         widget=forms.RadioSelect(attrs={'class': 'drivetrain'})
+#     )
+#     # Add more fields with radio choices
 
-    class Meta:
-        model = InspectionReport
-        fields = ['engine_peripherals', 'drivetrain', 'body_structure_chassis',
-                  'exterior', 'interior', 'mechanical', 'wheels_tyres']
+#     class Meta:
+#         model = InspectionReport
+#         fields = ['engine_peripherals', 'drivetrain', 'body_structure_chassis',
+#                   'exterior', 'interior', 'mechanical', 'wheels_tyres']

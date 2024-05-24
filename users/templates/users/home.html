@@ -169,7 +169,7 @@
           </div>
         </form>
       </div>
-      <div class="main-content">
+      {% comment %} <div class="main-content">
         <h1>Car Listings</h1>
         <div class="cards-container" id="vehicle-cards-container">
           <h2>Welcome to the Home Page</h2>
@@ -225,14 +225,64 @@
       </div>
 
       <div id="no-results" style="display: none; color: red; text-align: center; font-size: 20px; margin-top: 20px;">No results found</div>
+    </div> {% endcomment %}
+
+    <div class="main-content">
+      <h1>Car Listings</h1>
+      <div class="cards-container" id="vehicle-cards-container">
+        {% for listing in approved_listings %}
+          <div class="card">
+            <img src="{{ listing.product_image.url }}" alt="Product Image" />
+            <div class="card-content">
+              <h3>{{ listing.brand }} {{ listing.model }}</h3>
+              <p>
+                <strong>Year:</strong> {{ listing.year }}
+              </p>
+              <p>
+                <strong>Kms Driven:</strong> {{ listing.kms_driven }}
+              </p>
+              <p>
+                <strong>Fuel Type:</strong> {{ listing.fuel_type }}
+              </p>
+              <p>
+                <strong>Location:</strong> {{ listing.location }}
+              </p>
+              <p>
+                <strong>Pitching Price:</strong> ₹{{ listing.pitching_price }}
+              </p>
+              {% if listing.star_rating %}
+                <p>
+                  <strong>Rating:</strong>
+                  {% with stars='x'|rjust:listing.star_rating %}
+                    {% for i in stars %}
+                      <span class="star-ratings">★</span>
+                    {% endfor %}
+                  {% endwith %}
+                </p>
+              {% endif %}
+
+              {% if car_details %}
+                <p>
+                  <strong>Owner Review:</strong> {{ car_details.owner_review }}
+                </p>
+              {% endif %}
+              <p>
+                <strong>Uploaded At:</strong> {{ listing.uploaded_at }}
+              </p>
+              <a href="{% url 'view-vehicle' listing.id %}" class="btn btn-primary">View More</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
+    <div id="no-results" style="display: none; color: red; text-align: center; font-size: 20px; margin-top: 20px;">No results found</div>
 
     <!-- Other content here -->
-    {% comment %} {% if request.user.is_authenticated and not request.user.is_superuser %}
+    {% if request.user.is_authenticated and not request.user.is_superuser %}
       {% if request.user.userprofile.user_type == 'seller' %}
         <a href="{% url 'sell-vehicle' %}" class="btn btn-primary">Sell Vehicle</a>
       {% endif %}
-    {% endif %} {% endcomment %}
+    {% endif %}
 
     <script>
       function toggleFilter(filterId) {

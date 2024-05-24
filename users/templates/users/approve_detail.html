@@ -1,0 +1,22 @@
+<!-- users/templates/users/approve_detail.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Approve Car Details</title>
+  </head>
+  <body>
+    <h1>Approve Car Details</h1>
+    <h2>{{ car_details.vehicle_model }}</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {{ form.as_p }}
+
+      <button type="submit">Approve</button>
+    </form>
+  </body>
+</html>
