@@ -1,200 +1,422 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Believe Cars - Landing Page</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="{% static 'styles.css' %}" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+
+    <link rel="stylesheet" href="{% static 'assets/css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'assets/css/index.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Kufam:wght@400;500;600&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Koulen:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Plus Jakarta Sans:wght@500;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Merriweather Sans:wght@400&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&display=swap"
+    />
+
     <style>
-      /* styles.css */
-      
-      .header-section {
-        background: url('header-bg.jpg') no-repeat center center/cover;
-        color: white;
-        padding: 100px 0;
+      .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+        right: 0;
       }
-      
-      .how-we-roll img,
-      .featured-cars img,
-      .body-type img {
-        max-width: 100px;
-        margin-bottom: 10px;
+    
+      .dropdown-menu.show {
+        display: block;
       }
-      
-      .newsletter .form-control {
-        margin-bottom: 10px;
-      }
-      
-      .footer {
-        background-color: #f8f9fa;
-        border-top: 1px solid #e7e7e7;
-      }
-      
-      .footer ul {
-        padding: 0;
-        list-style: none;
-      }
-      
-      .footer ul li {
-        display: inline;
-        margin: 0 10px;
+    
+      .more-option {
+        position: relative;
+        display: inline-block;
       }
     </style>
+    
+    
   </head>
   <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#"><img src="{% static 'logo.png' %}" alt="Believe Cars Logo" style="width: 100px;" /></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Browse Cars</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Sell Your Car</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact Us</a>
-          </li>
-        </ul>
-        <button class="btn btn-primary ml-3">Login</button>
-      </div>
-    </nav>
+    <div class="home-page">
+      <div class="finance-info">
+        <img
+          class="finance-info-child"
+          alt=""
+          src="{% static 'assets/public/rectangle-5@2x.png' %}"
+        />
 
-    <!-- Header Section -->
-    <header class="header-section text-center">
-      <div class="container">
-        <h1>Buy, Sell from a whole new network of cars</h1>
-        <button class="btn btn-success">Get Started</button>
+        <div class="financing-made-possible-container">
+          <p class="financing-made-possible">Financing made possible</p>
+          <p class="financing-made-possible">for every car buyer</p>
+        </div>
+        <button class="eligibility">
+          <div class="eligibility-child"></div>
+          <div class="check-eligibility">Check Eligibility</div>
+        </button>
       </div>
-    </header>
+      <div class="featured-cars">
+        <button
+          class="maruti-suzuki-swift-zxi-amt"
+          id="marutiSuzukiSwiftZXIAMT"
+        >
+          <div class="details">
+            <div class="k-km-petrol-automatic">26K km · Petrol · Automatic</div>
+          </div>
+          <b class="maruti-suzuki-swift">2018 Maruti Suzuki Swift ZXI AMT</b>
+        </button>
+        <button class="hyundai-i20-active-12-s" id="hyundaiI20Active12S">
+          <img
+            class="hyundai-i20-active-12-s-child"
+            alt=""
+            src="{% static 'assets/public/rectangle-2@2x.png' %}"
+          />
 
-    <!-- How We Roll Section -->
-    <section class="how-we-roll text-center py-5">
-      <div class="container">
-        <h2>How We Roll</h2>
-        <div class="row">
-          <div class="col-md-4">
-            <img src="{% static 'assets/images/img1.png' %}" alt="Step 1" />
-            <p>Easy step-by-step process</p>
+          <div class="details1">
+            <div class="k-km-petrol-automatic">81K km · Petrol · Manual</div>
           </div>
-          <div class="col-md-4">
-            <img src="{% static 'assets/images/img2.png' %}" alt="Step 2" />
-            <p>Wide range of cars</p>
+          <b class="hyundai-i20-active">2016 Hyundai i20 Active 1.2 S</b>
+        </button>
+        <button class="hyundai-i20-active-12-s1" id="hyundaiI20Active12S1">
+          <img
+            class="hyundai-i20-active-12-s-child"
+            alt=""
+            src="{% static 'assets/public/rectangle-21@2x.png' %}"
+          />
+
+          <div class="details1">
+            <div class="k-km-petrol-automatic">81K km · Petrol · Manual</div>
           </div>
-          <div class="col-md-4">
-            <img src="{% static 'assets/images/img3.png' %}" alt="Step 3" />
-            <p>Best financing options</p>
+          <b class="hyundai-i20-active">2016 Hyundai i20 Active 1.2 S</b>
+        </button>
+        <button
+          class="maruti-suzuki-swift-zxi-amt1"
+          id="marutiSuzukiSwiftZXIAMT1"
+        >
+          <img
+            class="hyundai-i20-active-12-s-child"
+            alt=""
+            src="{% static 'assets/public/rectangle-22@2x.png' %}"
+          />
+
+          <div class="details">
+            <div class="k-km-petrol-automatic">26K km · Petrol · Automatic</div>
           </div>
+          <b class="maruti-suzuki-swift">2018 Maruti Suzuki Swift ZXI AMT</b>
+        </button>
+        <div class="our-parent">
+          <div class="our">Our</div>
+          <div class="featured-cars1">Featured cars</div>
+        </div>
+        <div class="line-parent">
+          <div class="frame-child"></div>
+          <div class="frame-item"></div>
         </div>
       </div>
-    </section>
+      <div class="booking-steps">
+        <img
+          class="booking-steps-child"
+          alt=""
+          src="{% static 'assets/public/frame-71@2x.png' %}"
+        />
 
-    <!-- Financing Section -->
-    <section class="financing text-center py-5 bg-light">
-      <div class="container">
-        <h2>Financing made possible for every car buyer</h2>
-        <button class="btn btn-danger">Open Subsidy</button>
-      </div>
-    </section>
+        <img class="booking-steps-item" alt="" src="{% static 'assets/public/frame-8@2x.png' %}" />
 
-    <!-- Featured Cars Section -->
-    <section class="featured-cars text-center py-5">
-      <div class="container">
-        <h2>Featured Cars</h2>
-        <div class="row">
-          <div class="col-md-3">
-            <img src="{% static 'assets/images/car_img1.png' %}" alt="Car 1" />
-            <p>Maruti Suzuki Swift</p>
-          </div>
-          <div class="col-md-3">
-            <img src="{% static 'assets/images/car2.png' %}" alt="Car 2" />
-            <p>Hyundai i20</p>
-          </div>
-          <div class="col-md-3">
-            <img src="{% static 'assets/images/car3.png' %}" alt="Car 3" />
-            <p>Honda City</p>
-          </div>
-          <div class="col-md-3">
-            <img src="{% static 'assets/images/car4.png' %}" alt="Car 4" />
-            <p>Toyota Innova</p>
-          </div>
+        <img
+          class="ant-designright-outlined-icon"
+          alt=""
+          src="{% static 'assets/public/antdesignrightoutlined.svg' %}"
+        />
+
+        <img class="booking-steps-inner" alt="" src="{% static 'assets/public/frame-9@2x.png' %}" />
+
+        <img
+          class="ant-designright-outlined-icon1"
+          alt=""
+          src="{% static 'assets/public/antdesignrightoutlined.svg' %}"
+        />
+
+        <div class="search-for-your-container">
+          <p class="financing-made-possible">Search for your favorite car</p>
+          <p class="book-your-car">Book your car online</p>
+        </div>
+        <div class="contact-us-and-container">
+          <p class="financing-made-possible">
+            Contact us and test drive the car
+          </p>
+          <p class="book-your-car">Sanitized cars for every test drive</p>
+        </div>
+        <div class="eased-up-paper-container">
+          <p class="financing-made-possible">
+            Eased up paper works & Doorstep Delivery
+          </p>
+          <p class="book-your-car">Finance options available for payments</p>
         </div>
       </div>
-    </section>
-
-    <!-- Body Type Section -->
-    <section class="body-type text-center py-5 bg-light">
-      <div class="container">
-        <h2>Browse by Body Type</h2>
-        <div class="row">
-          <div class="col-md-2">
-            <img src="{% static 'assets/images/img1.png' %}" alt="Sedan" />
-            <p>Sedan</p>
+      <div class="hero-space">
+        <div class="steps">
+          <div class="so-parent">
+            <div class="our">So,</div>
+            <div class="how-we-roll-container">
+              <span> </span>
+              <span class="how-we-roll">How we roll?</span>
+            </div>
           </div>
-          <div class="col-md-2">
-            <img src="{% static 'assets/images/img1.png' %}" alt="Hatchback" />
-            <p>Hatchback</p>
-          </div>
-          <div class="col-md-2">
-            <img src="{% static 'assets/images/img1.png' %}" alt="SUV" />
-            <p>SUV</p>
-          </div>
-          <div class="col-md-2">
-            <img src="{% static 'assets/images/img1.png' %}" alt="Premium Sedan" />
-            <p>Premium Sedan</p>
-          </div>
-          <div class="col-md-2">
-            <img src="{% static 'assets/images/img1.png' %}" alt="Premium SUV" />
-            <p>Premium SUV</p>
+          <div class="line-group">
+            <div class="frame-inner"></div>
+            <div class="frame-item"></div>
           </div>
         </div>
+        <button class="hero-button">
+          <div class="get-started">Get Started</div>
+        </button>
+        <b class="buy-sell-from">Buy, Sell from a whole new network of cars</b>
       </div>
-    </section>
+      <img class="hero-image-icon" alt="" src="{% static 'assets/public/frame-196@2x.png' %}" />
 
-    <!-- Newsletter Section -->
-    <section class="newsletter text-center py-5">
-      <div class="container">
-        <h2>Partner with us and Earn money Hassle-free</h2>
-        <form class="form-inline justify-content-center">
-          <input type="email" class="form-control mb-2 mr-sm-2" placeholder="Email Address" />
-          <input type="text" class="form-control mb-2 mr-sm-2" placeholder="Mobile Number" />
-          <button type="submit" class="btn btn-primary mb-2">Register Now</button>
-        </form>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="whatsappUpdates" />
-          <label class="form-check-label" for="whatsappUpdates">Get updates on WhatsApp</label>
+      <div class="seller-redirect">
+        <img
+          class="seller-redirect-child"
+          alt=""
+          src="{% static 'assets/public/rectangle-7@2x.png' %}"
+        />
+
+        <input class="email" placeholder="email address" type="email" />
+
+        <input
+          class="mobile"
+          placeholder="mobile number"
+          type="number"
+          size="{10}"
+        />
+
+        <div class="partner-with-us-container">
+          <p class="financing-made-possible">Partner with us and</p>
+          <p class="financing-made-possible">Earn money Hassle-free</p>
+        </div>
+        <div class="fill-the-details">
+          Fill the details and become one of us
+        </div>
+        <div class="whatsapp-update">
+          <div class="get-updates-on">Get updates on WhatsApp</div>
+          <input class="rectangle-input" required="{true}" type="checkbox" />
+        </div>
+        <button class="seller-register" id="sellerRegister">
+          <div class="register-now"  ><a href="{% url 'user-register' %}">Register Now</a> </div>
+        </button>
+      </div>
+      <div class="navigation-bar">
+        <div class="navigation-bar-child"></div>
+        <img class="logo-icon" alt="" src="{% static 'assets/public/frame-2@2x.png' %}" />
+
+        <input
+          class="make-and-model"
+          placeholder="Search by Make or Model"
+          type="search"
+        />
+
+        <div class="city">
+          <div class="city-inner">
+            <div class="select-city-parent">
+              <div class="select-city">Select City</div>
+              <img
+                class="subwaydown-2-icon"
+                alt=""
+                src="{% static 'assets/public/subwaydown2.svg' %}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="more-option">
+          <div class="more-parent" id="moreButton">
+            <div class="more">More</div>
+            <img class="group-icon" alt="" src="{% static 'assets/public/group.svg' %}" />
+          </div>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <div class="frame-17buy-parent">
+              <div class="frame-17buy" id="frame17BuyContainer">
+                <div class="buy">Buy</div>
+              </div>
+              <div class="frame-17buy1" id="frame17BuyContainer1">
+                <div class="buy">Sell</div>
+              </div>
+              <div class="frame-17buy2">
+                <div class="buy">About Us</div>
+              </div>
+              <div class="frame-17buy3">
+                <div class="buy3">Contact</div>
+              </div>
+              <div class="frame-child1"></div>
+              <div class="frame-17buy4">
+                <div class="buy3">Join Us</div>
+              </div>
+              <img
+                class="icon-park-outlinebuy"
+                alt=""
+                src="{% static 'assets/public/iconparkoutlinebuy.svg' %}"
+              />
+              <img
+                class="icoutline-sell-icon"
+                alt=""
+                src="{% static 'assets/public/icoutlinesell.svg' %}"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div class="my-account" id="myAccountContainer">
+          <img
+            class="iconamoonprofile-fill"
+            alt=""
+            src="{% static 'assets/public/iconamoonprofilefill.svg' %}"/>
+
+          <div class="my-account1">My Account</div>
+        </div>
+        <div class="contact">
+          <div class="div">98883 38899</div>
+          <div class="contact-us">contact us:</div>
         </div>
       </div>
-    </section>
+      <button class="view-cars" id="viewCars">view more</button>
+      <div class="footer">
+        <div class="footer-child"></div>
+        <button class="sign-up" id="signUp">
+          <div class="sign-up1">Sign Up</div>
+        </button>
+        <button class="view-cars1">
+          <div class="browse-cars">Browse Cars</div>
+        </button>
+        <img class="logo2-icon" alt="" src="{% static 'assets/public/frame-21@2x.png' %}" />
 
-    <!-- Footer -->
-    <footer class="footer text-center py-4">
-      <div class="container">
-        <p>&copy; 2024 Believe Cars. All rights reserved.</p>
-        <ul class="list-inline">
-          <li class="list-inline-item">
-            <a href="#">About Us</a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#">Contact Us</a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#">Terms of Service</a>
-          </li>
-          <li class="list-inline-item">
-            <a href="#">Privacy Policy</a>
-          </li>
-        </ul>
-        <p>Phone: 123-456-7890</p>
+        <div class="about">About</div>
+        <div class="buy">Buy</div>
+        <div class="sell">Sell</div>
+        <div class="customer-reviews">Customer Reviews</div>
+        <div class="used-car-loan">Used Car Loan</div>
+        <div class="our-referral-system">Our Referral system</div>
+        <div class="inspection-process">Inspection Process</div>
+        <div class="contact1">
+          <div class="div1">98883 38899</div>
+          <img
+            class="carbonphone-filled-icon"
+            alt=""
+            src="{% static 'assets/public/carbonphonefilled.svg' %}"
+          />
+        </div>
+        <input class="email1" placeholder="email address" type="email" />
+
+        <input
+          class="mobile1"
+          placeholder="mobile number"
+          type="text"
+          size="{10}"
+        />
+
+        <div class="believe-cars-is">
+          Believe Cars is your trusted partner for buying and selling used cars,
+          including premium models. We provide exceptional service, ensuring a
+          smooth and reliable car trading experience. With a wide selection of
+          vehicles and flexible financing options, we cater to all your
+          automotive needs. Discover the perfect car with Believe Cars, where
+          quality meets affordability.
+        </div>
       </div>
-    </footer>
+    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      var marutiSuzukiSwiftZXIAMT = document.getElementById(
+        "marutiSuzukiSwiftZXIAMT"
+      );
+      if (marutiSuzukiSwiftZXIAMT) {
+        marutiSuzukiSwiftZXIAMT.addEventListener("click", function (e) {
+          // Please sync "Car Details" to the project
+        });
+      }
+     
+      var hyundaiI20Active12S = document.getElementById("hyundaiI20Active12S");
+      if (hyundaiI20Active12S) {
+        hyundaiI20Active12S.addEventListener("click", function (e) {
+          // Please sync "Car Details 4" to the project
+        });
+      }
+     
+      var hyundaiI20Active12S1 = document.getElementById("hyundaiI20Active12S1");
+      if (hyundaiI20Active12S1) {
+        hyundaiI20Active12S1.addEventListener("click", function (e) {
+          // Please sync "Car Details 2" to the project
+        });
+      }
+     
+      var marutiSuzukiSwiftZXIAMT1 = document.getElementById(
+        "marutiSuzukiSwiftZXIAMT1"
+      );
+      if (marutiSuzukiSwiftZXIAMT1) {
+        marutiSuzukiSwiftZXIAMT1.addEventListener("click", function (e) {
+          // Please sync "Car Details 3" to the project
+        });
+      }
+     
+      var sellerRegister = document.getElementById("sellerRegister");
+      if (sellerRegister) {
+        sellerRegister.addEventListener("click", function (e) {
+          // Please sync "Seller Login" to the project
+        });
+      }
+     
+      var myAccountContainer = document.getElementById("myAccountContainer");
+      if (myAccountContainer) {
+        myAccountContainer.addEventListener("click", function (e) {
+          // Please sync "Buyer Login" to the project
+        });
+      }
+     
+      var viewCars = document.getElementById("viewCars");
+      if (viewCars) {
+        viewCars.addEventListener("click", function (e) {
+          // Please sync "View Cars" to the project
+        });
+      }
+     
+      var signUp = document.getElementById("signUp");
+      if (signUp) {
+        signUp.addEventListener("click", function (e) {
+          // Please sync "Buyer Login" to the project
+        });
+      }
+      </script>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function() {
+          var moreButton = document.getElementById("moreButton");
+          var dropdownMenu = document.getElementById("dropdownMenu");
+      
+          if (moreButton) {
+            moreButton.addEventListener("click", function(e) {
+              dropdownMenu.classList.toggle("show");
+            });
+      
+            // Close the dropdown if clicked outside
+            window.addEventListener("click", function(e) {
+              if (!moreButton.contains(e.target)) {
+                dropdownMenu.classList.remove("show");
+              }
+            });
+          }
+        });
+      </script>
+      
   </body>
 </html>

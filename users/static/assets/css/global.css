@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-kufam: Kufam;
+  --font-merriweather-sans: "Merriweather Sans";
+  --font-merriweather: Merriweather;
+  --font-koulen: Koulen;
+  --font-plus-jakarta-sans: "Plus Jakarta Sans";
+
+  /* font sizes */
+  --font-size-lg: 18px;
+  --font-size-3xl: 22px;
+  --font-size-13xl: 32px;
+  --font-size-xl: 20px;
+  --font-size-11xl: 30px;
+  --font-size-base: 16px;
+  --font-size-mini: 15px;
+  --font-size-17xl: 36px;
+  --font-size-19xl: 38px;
+  --font-size-sm: 14px;
+
+  /* Colors */
+  --color-darkslategray-100: #464646;
+  --color-darkslategray-200: #414040;
+  --color-darkgray: #a1a1aa;
+  --color-white: #fff;
+  --color-gray-100: #878787;
+  --color-gray-200: #838282;
+  --gray-900: #18181b;
+  --color-gray-300: rgba(255, 255, 255, 0);
+  --color-cornflowerblue: #04a4ff;
+  --color-ghostwhite-100: #f7f8fc;
+  --color-black: #000;
+  --color-gainsboro: #d9d9d9;
+  --color-deepskyblue: #27aae1;
+  --gray-600: #52525b;
+
+  /* Paddings */
+  --padding-5xs: 8px;
+  --padding-mini: 15px;
+  --padding-4xl: 23px;
+  --padding-6xl: 25px;
+  --padding-2xs: 11px;
+  --padding-7xl: 26px;
+
+  /* Border radiuses */
+  --br-10xl-5: 29.5px;
+  --br-mini: 15px;
+  --br-3xs: 10px;
+  --br-xs: 12px;
+  --br-xl: 20px;
+  --br-5xs: 8px;
+  --br-lg: 18px;
+}
