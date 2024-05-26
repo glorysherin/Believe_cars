@@ -48,7 +48,7 @@ def user_logout(request):
     logout(request)
     return redirect('home')
 def owner_home(request):
-    approved_listings = VehicleListing.objects.filter(is_approved=True)
+    approved_listings = VehicleListing.objects.filter(is_approved=True).order_by('-uploaded_at')
     context = {
         'approved_listings': approved_listings
     }

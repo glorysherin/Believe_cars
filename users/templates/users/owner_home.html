@@ -221,6 +221,11 @@
                       {% endfor %}
                     </p>
                   {% endif %}
+                  {% if car_details %}
+                    <p>
+                      <strong>Owner Review:</strong> {{ car_details.owner_review }}
+                    </p>
+                  {% endif %}
                   <p>
                     <strong>Uploaded At:</strong> {{ listing.uploaded_at }}
                   </p> <!-- New field displayed -->
