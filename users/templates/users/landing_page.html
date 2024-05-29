@@ -3,10 +3,14 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <link rel="stylesheet" href="{% static 'assets/css/global.css' %}" />
-    <link rel="stylesheet" href="{% static 'assets/css/index.css' %}" />
+    <!-- Tailwind CSS CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Kufam:wght@400;500;600&display=swap"
@@ -33,390 +37,149 @@
         display: none;
         position: absolute;
         background-color: white;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         z-index: 1;
         right: 0;
       }
-    
+
       .dropdown-menu.show {
         display: block;
       }
-    
+
       .more-option {
         position: relative;
         display: inline-block;
       }
     </style>
-    
-    
   </head>
-  <body>
-    <div class="home-page">
-      <div class="finance-info">
-        <img
-          class="finance-info-child"
-          alt=""
-          src="{% static 'assets/public/rectangle-5@2x.png' %}"
-        />
-
-        <div class="financing-made-possible-container">
-          <p class="financing-made-possible">Financing made possible</p>
-          <p class="financing-made-possible">for every car buyer</p>
+  <body class="bg-blue-50 font-sans leading-normal tracking-normal">
+    <div class="home-page container mx-auto px-4">
+      <div class="hero-space flex flex-col items-center text-center my-12">
+        <div class="steps mb-8">
+          <div class="so-parent flex items-center justify-center">
+            <div class="text-2xl font-bold">So,</div>
+            <div class="how-we-roll-container text-3xl font-bold ml-2">How we roll?</div>
+          </div>
+          <div class="line-group flex justify-center mt-2">
+            <div class="w-16 h-1 bg-gray-400 mx-1"></div>
+            <div class="w-16 h-1 bg-gray-400 mx-1"></div>
+          </div>
         </div>
-        <button class="eligibility">
-          <div class="eligibility-child"></div>
+        <button class="hero-button bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">
+          <div class="get-started">Get Started</div>
+        </button>
+        <b class="buy-sell-from text-4xl font-bold mt-6">Buy, Sell from a whole new network of cars</b>
+      </div>
+      <img class="hero-image-icon w-full max-w-md mx-auto" alt="" src="{% static 'assets/public/frame-196@2x.png' %}" />
+
+      <div class="booking-steps flex flex-col md:flex-row justify-between items-center my-12">
+        <div class="flex flex-col items-center text-center">
+          <img class="w-24 h-24 mb-4" alt="" src="{% static 'assets/public/frame-71@2x.png' %}" />
+          <p class="font-semibold">Search for your favorite car</p>
+          <p class="text-gray-600">Book your car online</p>
+        </div>
+        <img class="w-6 h-6 my-4 md:my-0" alt="" src="{% static 'assets/public/antdesignrightoutlined.svg' %}" />
+        <div class="flex flex-col items-center text-center">
+          <img class="w-24 h-24 mb-4" alt="" src="{% static 'assets/public/frame-8@2x.png' %}" />
+          <p class="font-semibold">Contact us and test drive the car</p>
+          <p class="text-gray-600">Sanitized cars for every test drive</p>
+        </div>
+        <img class="w-6 h-6 my-4 md:my-0" alt="" src="{% static 'assets/public/antdesignrightoutlined.svg' %}" />
+        <div class="flex flex-col items-center text-center">
+          <img class="w-24 h-24 mb-4" alt="" src="{% static 'assets/public/frame-9@2x.png' %}" />
+          <p class="font-semibold">Eased up paper works & Doorstep Delivery</p>
+          <p class="text-gray-600">Finance options available for payments</p>
+        </div>
+      </div>
+
+      <div class="finance-info bg-white shadow-md rounded-lg p-6 text-center mb-12">
+        <img class="w-full max-w-sm mx-auto mb-6" alt="" src="{% static 'assets/public/rectangle-5@2x.png' %}" />
+        <div class="financing-made-possible-container text-xl font-bold mb-4">
+          <p>Financing made possible</p>
+          <p>for every car buyer</p>
+        </div>
+        <button class="eligibility bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">
           <div class="check-eligibility">Check Eligibility</div>
         </button>
       </div>
-      <div class="featured-cars">
-        <button
-          class="maruti-suzuki-swift-zxi-amt"
-          id="marutiSuzukiSwiftZXIAMT"
-        >
-          <div class="details">
-            <div class="k-km-petrol-automatic">26K km · Petrol · Automatic</div>
-          </div>
-          <b class="maruti-suzuki-swift">2018 Maruti Suzuki Swift ZXI AMT</b>
-        </button>
-        <button class="hyundai-i20-active-12-s" id="hyundaiI20Active12S">
-          <img
-            class="hyundai-i20-active-12-s-child"
-            alt=""
-            src="{% static 'assets/public/rectangle-2@2x.png' %}"
-          />
 
-          <div class="details1">
-            <div class="k-km-petrol-automatic">81K km · Petrol · Manual</div>
-          </div>
-          <b class="hyundai-i20-active">2016 Hyundai i20 Active 1.2 S</b>
+      <div class="featured-cars grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <button class="bg-white shadow-md rounded-lg p-4 text-center">
+          <img class="w-full mb-4" alt="" src="{% static 'assets/public/rectangle-2@2x.png' %}" />
+          <b class="block text-xl font-bold mb-2">2018 Maruti Suzuki Swift ZXI AMT</b>
+          <div class="text-gray-600">26K km · Petrol · Automatic</div>
         </button>
-        <button class="hyundai-i20-active-12-s1" id="hyundaiI20Active12S1">
-          <img
-            class="hyundai-i20-active-12-s-child"
-            alt=""
-            src="{% static 'assets/public/rectangle-21@2x.png' %}"
-          />
-
-          <div class="details1">
-            <div class="k-km-petrol-automatic">81K km · Petrol · Manual</div>
-          </div>
-          <b class="hyundai-i20-active">2016 Hyundai i20 Active 1.2 S</b>
+        <button class="bg-white shadow-md rounded-lg p-4 text-center">
+          <img class="w-full mb-4" alt="" src="{% static 'assets/public/rectangle-2@2x.png' %}" />
+          <b class="block text-xl font-bold mb-2">2016 Hyundai i20 Active 1.2 S</b>
+          <div class="text-gray-600">81K km · Petrol · Manual</div>
         </button>
-        <button
-          class="maruti-suzuki-swift-zxi-amt1"
-          id="marutiSuzukiSwiftZXIAMT1"
-        >
-          <img
-            class="hyundai-i20-active-12-s-child"
-            alt=""
-            src="{% static 'assets/public/rectangle-22@2x.png' %}"
-          />
-
-          <div class="details">
-            <div class="k-km-petrol-automatic">26K km · Petrol · Automatic</div>
-          </div>
-          <b class="maruti-suzuki-swift">2018 Maruti Suzuki Swift ZXI AMT</b>
+        <button class="bg-white shadow-md rounded-lg p-4 text-center">
+          <img class="w-full mb-4" alt="" src="{% static 'assets/public/rectangle-21@2x.png' %}" />
+          <b class="block text-xl font-bold mb-2">2016 Hyundai i20 Active 1.2 S</b>
+          <div class="text-gray-600">81K km · Petrol · Manual</div>
         </button>
-        <div class="our-parent">
-          <div class="our">Our</div>
-          <div class="featured-cars1">Featured cars</div>
-        </div>
-        <div class="line-parent">
-          <div class="frame-child"></div>
-          <div class="frame-item"></div>
-        </div>
+        <button class="bg-white shadow-md rounded-lg p-4 text-center">
+          <img class="w-full mb-4" alt="" src="{% static 'assets/public/rectangle-22@2x.png' %}" />
+          <b class="block text-xl font-bold mb-2">2018 Maruti Suzuki Swift ZXI AMT</b>
+          <div class="text-gray-600">26K km · Petrol · Automatic</div>
+        </button>
       </div>
-      <div class="booking-steps">
-        <img
-          class="booking-steps-child"
-          alt=""
-          src="{% static 'assets/public/frame-71@2x.png' %}"
-        />
 
-        <img class="booking-steps-item" alt="" src="{% static 'assets/public/frame-8@2x.png' %}" />
-
-        <img
-          class="ant-designright-outlined-icon"
-          alt=""
-          src="{% static 'assets/public/antdesignrightoutlined.svg' %}"
-        />
-
-        <img class="booking-steps-inner" alt="" src="{% static 'assets/public/frame-9@2x.png' %}" />
-
-        <img
-          class="ant-designright-outlined-icon1"
-          alt=""
-          src="{% static 'assets/public/antdesignrightoutlined.svg' %}"
-        />
-
-        <div class="search-for-your-container">
-          <p class="financing-made-possible">Search for your favorite car</p>
-          <p class="book-your-car">Book your car online</p>
+      <div class="seller-redirect bg-white shadow-md rounded-lg p-6 text-center mb-12">
+        <img class="w-full max-w-sm mx-auto mb-6" alt="" src="{% static 'assets/public/rectangle-7@2x.png' %}" />
+        <input class="email w-full mb-4 p-2 border rounded" placeholder="email address" type="email" />
+        <input class="mobile w-full mb-4 p-2 border rounded" placeholder="mobile number" type="number" size="{10}" />
+        <div class="partner-with-us-container text-xl font-bold mb-4">
+          <p>Partner with us and</p>
+          <p>Earn money Hassle-free</p>
         </div>
-        <div class="contact-us-and-container">
-          <p class="financing-made-possible">
-            Contact us and test drive the car
-          </p>
-          <p class="book-your-car">Sanitized cars for every test drive</p>
-        </div>
-        <div class="eased-up-paper-container">
-          <p class="financing-made-possible">
-            Eased up paper works & Doorstep Delivery
-          </p>
-          <p class="book-your-car">Finance options available for payments</p>
-        </div>
-      </div>
-      <div class="hero-space">
-        <div class="steps">
-          <div class="so-parent">
-            <div class="our">So,</div>
-            <div class="how-we-roll-container">
-              <span> </span>
-              <span class="how-we-roll">How we roll?</span>
-            </div>
-          </div>
-          <div class="line-group">
-            <div class="frame-inner"></div>
-            <div class="frame-item"></div>
-          </div>
-        </div>
-        <button class="hero-button">
-          <div class="get-started">Get Started</div>
-        </button>
-        <b class="buy-sell-from">Buy, Sell from a whole new network of cars</b>
-      </div>
-      <img class="hero-image-icon" alt="" src="{% static 'assets/public/frame-196@2x.png' %}" />
-
-      <div class="seller-redirect">
-        <img
-          class="seller-redirect-child"
-          alt=""
-          src="{% static 'assets/public/rectangle-7@2x.png' %}"
-        />
-
-        <input class="email" placeholder="email address" type="email" />
-
-        <input
-          class="mobile"
-          placeholder="mobile number"
-          type="number"
-          size="{10}"
-        />
-
-        <div class="partner-with-us-container">
-          <p class="financing-made-possible">Partner with us and</p>
-          <p class="financing-made-possible">Earn money Hassle-free</p>
-        </div>
-        <div class="fill-the-details">
-          Fill the details and become one of us
-        </div>
-        <div class="whatsapp-update">
+        <div class="fill-the-details text-gray-600 mb-4">Fill the details and become one of us</div>
+        <div class="whatsapp-update flex items-center justify-center mb-4">
+          <input class="mr-2" type="checkbox" />
           <div class="get-updates-on">Get updates on WhatsApp</div>
-          <input class="rectangle-input" required="{true}" type="checkbox" />
         </div>
-        <button class="seller-register" id="sellerRegister">
-          <div class="register-now"  ><a href="{% url 'user-register' %}">Register Now</a> </div>
+        <button class="seller-register bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300">
+          <div class="register-now">Register Now</div>
         </button>
       </div>
-      <div class="navigation-bar">
-        <div class="navigation-bar-child"></div>
-        <img class="logo-icon" alt="" src="{% static 'assets/public/frame-2@2x.png' %}" />
 
-        <input
-          class="make-and-model"
-          placeholder="Search by Make or Model"
-          type="search"
-        />
-
-        <div class="city">
-          <div class="city-inner">
-            <div class="select-city-parent">
-              <div class="select-city">Select City</div>
-              <img
-                class="subwaydown-2-icon"
-                alt=""
-                src="{% static 'assets/public/subwaydown2.svg' %}"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="more-option">
-          <div class="more-parent" id="moreButton">
-            <div class="more">More</div>
-            <img class="group-icon" alt="" src="{% static 'assets/public/group.svg' %}" />
-          </div>
-          <div class="dropdown-menu" id="dropdownMenu">
-            <div class="frame-17buy-parent">
-              <div class="frame-17buy" id="frame17BuyContainer">
-                <div class="buy">Buy</div>
-              </div>
-              <div class="frame-17buy1" id="frame17BuyContainer1">
-                <div class="buy">Sell</div>
-              </div>
-              <div class="frame-17buy2">
-                <div class="buy">About Us</div>
-              </div>
-              <div class="frame-17buy3">
-                <div class="buy3">Contact</div>
-              </div>
-              <div class="frame-child1"></div>
-              <div class="frame-17buy4">
-                <div class="buy3">Join Us</div>
-              </div>
-              <img
-                class="icon-park-outlinebuy"
-                alt=""
-                src="{% static 'assets/public/iconparkoutlinebuy.svg' %}"
-              />
-              <img
-                class="icoutline-sell-icon"
-                alt=""
-                src="{% static 'assets/public/icoutlinesell.svg' %}"
-              />
-            </div>
-          </div>
-        </div>
-        
-        <div class="my-account" id="myAccountContainer">
-          <img
-            class="iconamoonprofile-fill"
-            alt=""
-            src="{% static 'assets/public/iconamoonprofilefill.svg' %}"/>
-
-          <div class="my-account1">My Account</div>
-        </div>
-        <div class="contact">
-          <div class="div">98883 38899</div>
-          <div class="contact-us">contact us:</div>
-        </div>
+      <div class="popular-cars grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <button class="bg-white shadow-md rounded-lg p-4 text-center">
+          <img class="w-full mb-4" alt="" src="{% static 'assets/public/rectangle-2@2x.png' %}" />
+          <b class="block text-xl font-bold mb-2">2018 Maruti Suzuki Swift ZXI AMT</b>
+          <div class="text-gray-600">26K km · Petrol · Automatic</div>
+        </button>
+        <button class="bg-white shadow-md rounded-lg p-4 text-center">
+          <img class="w-full mb-4" alt="" src="{% static 'assets/public/rectangle-2@2x.png' %}" />
+          <b class="block text-xl font-bold mb-2">2016 Hyundai i20 Active 1.2 S</b>
+          <div class="text-gray-600">81K km · Petrol · Manual</div>
+        </button>
+        <button class="bg-white shadow-md rounded-lg p-4 text-center">
+          <img class="w-full mb-4" alt="" src="{% static 'assets/public/rectangle-21@2x.png' %}" />
+          <b class="block text-xl font-bold mb-2">2016 Hyundai i20 Active 1.2 S</b>
+          <div class="text-gray-600">81K km · Petrol · Manual</div>
+        </button>
+        <button class="bg-white shadow-md rounded-lg p-4 text-center">
+          <img class="w-full mb-4" alt="" src="{% static 'assets/public/rectangle-22@2x.png' %}" />
+          <b class="block text-xl font-bold mb-2">2018 Maruti Suzuki Swift ZXI AMT</b>
+          <div class="text-gray-600">26K km · Petrol · Automatic</div>
+        </button>
       </div>
-      <button class="view-cars" id="viewCars">view more</button>
-      <div class="footer">
-        <div class="footer-child"></div>
-        <button class="sign-up" id="signUp">
-          <div class="sign-up1">Sign Up</div>
-        </button>
-        <button class="view-cars1">
-          <div class="browse-cars">Browse Cars</div>
-        </button>
-        <img class="logo2-icon" alt="" src="{% static 'assets/public/frame-21@2x.png' %}" />
 
-        <div class="about">About</div>
-        <div class="buy">Buy</div>
-        <div class="sell">Sell</div>
-        <div class="customer-reviews">Customer Reviews</div>
-        <div class="used-car-loan">Used Car Loan</div>
-        <div class="our-referral-system">Our Referral system</div>
-        <div class="inspection-process">Inspection Process</div>
-        <div class="contact1">
-          <div class="div1">98883 38899</div>
-          <img
-            class="carbonphone-filled-icon"
-            alt=""
-            src="{% static 'assets/public/carbonphonefilled.svg' %}"
-          />
-        </div>
-        <input class="email1" placeholder="email address" type="email" />
-
-        <input
-          class="mobile1"
-          placeholder="mobile number"
-          type="text"
-          size="{10}"
-        />
-
-        <div class="believe-cars-is">
-          Believe Cars is your trusted partner for buying and selling used cars,
-          including premium models. We provide exceptional service, ensuring a
-          smooth and reliable car trading experience. With a wide selection of
-          vehicles and flexible financing options, we cater to all your
-          automotive needs. Discover the perfect car with Believe Cars, where
-          quality meets affordability.
+      <div class="bg-blue-600 text-white p-6 text-center">
+        <div class="for-any-queries-container text-xl font-bold mb-4">For any queries</div>
+        <div class="email-parent flex flex-col md:flex-row justify-center items-center">
+          <div class="mr-4">
+            <img class="w-8 h-8 inline-block" alt="" src="{% static 'assets/public/icbaselineemail.svg' %}" />
+            <span class="ml-2">contact@company.com</span>
+          </div>
+          <div>
+            <img class="w-8 h-8 inline-block" alt="" src="{% static 'assets/public/antdesignphonefilled.svg' %}" />
+            <span class="ml-2">1800 123 4567</span>
+          </div>
         </div>
       </div>
     </div>
-
-    <script>
-      var marutiSuzukiSwiftZXIAMT = document.getElementById(
-        "marutiSuzukiSwiftZXIAMT"
-      );
-      if (marutiSuzukiSwiftZXIAMT) {
-        marutiSuzukiSwiftZXIAMT.addEventListener("click", function (e) {
-          // Please sync "Car Details" to the project
-        });
-      }
-     
-      var hyundaiI20Active12S = document.getElementById("hyundaiI20Active12S");
-      if (hyundaiI20Active12S) {
-        hyundaiI20Active12S.addEventListener("click", function (e) {
-          // Please sync "Car Details 4" to the project
-        });
-      }
-     
-      var hyundaiI20Active12S1 = document.getElementById("hyundaiI20Active12S1");
-      if (hyundaiI20Active12S1) {
-        hyundaiI20Active12S1.addEventListener("click", function (e) {
-          // Please sync "Car Details 2" to the project
-        });
-      }
-     
-      var marutiSuzukiSwiftZXIAMT1 = document.getElementById(
-        "marutiSuzukiSwiftZXIAMT1"
-      );
-      if (marutiSuzukiSwiftZXIAMT1) {
-        marutiSuzukiSwiftZXIAMT1.addEventListener("click", function (e) {
-          // Please sync "Car Details 3" to the project
-        });
-      }
-     
-      var sellerRegister = document.getElementById("sellerRegister");
-      if (sellerRegister) {
-        sellerRegister.addEventListener("click", function (e) {
-          // Please sync "Seller Login" to the project
-        });
-      }
-     
-      var myAccountContainer = document.getElementById("myAccountContainer");
-      if (myAccountContainer) {
-        myAccountContainer.addEventListener("click", function (e) {
-          // Please sync "Buyer Login" to the project
-        });
-      }
-     
-      var viewCars = document.getElementById("viewCars");
-      if (viewCars) {
-        viewCars.addEventListener("click", function (e) {
-          // Please sync "View Cars" to the project
-        });
-      }
-     
-      var signUp = document.getElementById("signUp");
-      if (signUp) {
-        signUp.addEventListener("click", function (e) {
-          // Please sync "Buyer Login" to the project
-        });
-      }
-      </script>
-
-      <script>
-        document.addEventListener("DOMContentLoaded", function() {
-          var moreButton = document.getElementById("moreButton");
-          var dropdownMenu = document.getElementById("dropdownMenu");
-      
-          if (moreButton) {
-            moreButton.addEventListener("click", function(e) {
-              dropdownMenu.classList.toggle("show");
-            });
-      
-            // Close the dropdown if clicked outside
-            window.addEventListener("click", function(e) {
-              if (!moreButton.contains(e.target)) {
-                dropdownMenu.classList.remove("show");
-              }
-            });
-          }
-        });
-      </script>
-      
   </body>
 </html>

@@ -231,7 +231,7 @@
       <h1>Car Listings</h1>
       <div class="cards-container" id="vehicle-cards-container">
         {% for listing in approved_listings %}
-          <div class="card">
+          <div class="card" data-price="{{ listing.pitching_price }}" data-brand="{{ listing.brand }}" data-premium-brand="{{ listing.premium_brand }}" data-rating="{{ listing.star_rating }}" data-year="{{ listing.year }}" data-kms="{{ listing.kms_driven }}" data-fuel-type="{{ listing.fuel_type }}" data-transmission="{{ listing.transmission }}" data-priority="{{ listing.priority }}">
             <img src="{{ listing.product_image.url }}" alt="Product Image" />
             <div class="card-content">
               <h3>{{ listing.brand }} {{ listing.model }}</h3>
@@ -285,6 +285,7 @@
     {% endif %}
 
     <script>
+      // Function to toggle the visibility of filter sections
       function toggleFilter(filterId) {
         const filterContent = document.getElementById(filterId)
         const arrow = filterContent.previousElementSibling.querySelector('.arrow')
@@ -292,126 +293,107 @@
         arrow.classList.toggle('down')
       }
       
-      function filterVehicles() {
-        const cardsContainer = document.getElementById('vehicle-cards-container')
-        const cards = cardsContainer.getElementsByClassName('card')
-        const filtersForm = document.getElementById('filters-form')
-        const formData = new FormData(filtersForm)
-        let visibleCardCount = 0
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('filters-form')
+        const cards = document.querySelectorAll('.card')
+        const noResults = document.getElementById('no-results')
       
-        for (let card of cards) {
-          let showCard = true
+        form.addEventListener('change', function () {
+          const budgetFilters = Array.from(form.querySelectorAll('input[name="budget"]:checked')).map((el) => el.value)
+          const brandFilters = Array.from(form.querySelectorAll('input[name="brand"]:checked')).map((el) => el.value)
+          const premiumBrandFilters = Array.from(form.querySelectorAll('input[name="premium-brand"]:checked')).map((el) => el.value)
+          const ratingFilter = form.querySelector('input[name="rating"]:checked')?.value
+          const yearFilters = Array.from(form.querySelectorAll('input[name="year"]:checked')).map((el) => el.value)
+          const kmsDrivenFilters = Array.from(form.querySelectorAll('input[name="kms-driven"]:checked')).map((el) => el.value)
+          const fuelTypeFilters = Array.from(form.querySelectorAll('input[name="fuel-type"]:checked')).map((el) => el.value)
+          const transmissionFilters = Array.from(form.querySelectorAll('input[name="transmission"]:checked')).map((el) => el.value)
+          const priorityFilters = Array.from(form.querySelectorAll('input[name="priority"]:checked')).map((el) => el.value)
       
-          // Budget filter
-          const price = parseFloat(card.getAttribute('data-price'))
-          const budgetFilters = formData.getAll('budget')
-          if (budgetFilters.length > 0) {
-            showCard = budgetFilters.some((budget) => {
-              if (budget === 'under-2-lakhs' && price < 200000) return true
-              if (budget === '2-5-lakhs' && price >= 200000 && price <= 500000) return true
-              if (budget === '5-10-lakhs' && price > 500000 && price <= 1000000) return true
-              if (budget === 'above-10-lakhs' && price > 1000000) return true
-              return false
-            })
-          }
+          let visibleCardCount = 0
       
-          // Brand filter
-          if (showCard) {
-            const brand = card.getAttribute('data-brand')
-            const brandFilters = formData.getAll('brand')
-            if (brandFilters.length > 0) {
-              showCard = brandFilters.includes(brand)
-            }
-          }
+          cards.forEach((card) => {
+            const cardPrice = parseInt(card.dataset.price, 10)
+            const cardBrand = card.dataset.brand
+            const cardPremiumBrand = card.dataset.premiumBrand
+            const cardRating = parseInt(card.dataset.rating, 10)
+            const cardYear = parseInt(card.dataset.year, 10)
+            const cardKmsDriven = parseInt(card.dataset.kms, 10)
+            const cardFuelType = card.dataset.fuelType
+            const cardTransmission = card.dataset.transmission
+            const cardPriority = card.dataset.priority
       
-          // Premium Brand filter
-          if (showCard) {
-            const premiumBrand = card.getAttribute('data-premium-brand')
-            const premiumBrandFilters = formData.getAll('premium-brand')
-            if (premiumBrandFilters.length > 0) {
-              showCard = premiumBrandFilters.includes(premiumBrand)
-            }
-          }
-      
-          // Rating filter
-          if (showCard) {
-            const rating = parseInt(card.getAttribute('data-rating'))
-            const ratingFilter = formData.get('rating')
-            if (ratingFilter) {
-              showCard = rating >= parseInt(ratingFilter)
-            }
-          }
-      
-          // Year filter
-          if (showCard) {
-            const year = parseInt(card.getAttribute('data-year'))
-            const yearFilters = formData.getAll('year')
-            if (yearFilters.length > 0) {
-              showCard = yearFilters.some((yearFilter) => {
-                if (yearFilter === '2015' && year >= 2015) return true
-                if (yearFilter === '2010-2014' && year >= 2010 && year <= 2014) return true
-                if (yearFilter === '2005-2009' && year >= 2005 && year <= 2009) return true
-                if (yearFilter === 'before-2005' && year < 2005) return true
-                return false
+            const isBudgetMatch =
+              budgetFilters.length === 0 ||
+              budgetFilters.some((filter) => {
+                switch (filter) {
+                  case 'under-2-lakhs':
+                    return cardPrice < 200000
+                  case '2-5-lakhs':
+                    return cardPrice >= 200000 && cardPrice <= 500000
+                  case '5-10-lakhs':
+                    return cardPrice > 500000 && cardPrice <= 1000000
+                  case 'above-10-lakhs':
+                    return cardPrice > 1000000
+                  default:
+                    return false
+                }
               })
-            }
-          }
       
-          // Kilometers Driven filter
-          if (showCard) {
-            const kms = parseInt(card.getAttribute('data-kms'))
-            const kmsFilters = formData.getAll('kms-driven')
-            if (kmsFilters.length > 0) {
-              showCard = kmsFilters.some((kmsFilter) => {
-                if (kmsFilter === '0-50000' && kms <= 50000) return true
-                if (kmsFilter === '50000-100000' && kms > 50000 && kms <= 100000) return true
-                if (kmsFilter === '100000-150000' && kms > 100000 && kms <= 150000) return true
-                if (kmsFilter === 'above-150000' && kms > 150000) return true
-                return false
+            const isBrandMatch = brandFilters.length === 0 || brandFilters.includes(cardBrand)
+            const isPremiumBrandMatch = premiumBrandFilters.length === 0 || premiumBrandFilters.includes(cardPremiumBrand)
+            const isRatingMatch = !ratingFilter || cardRating === parseInt(ratingFilter, 10)
+            const isYearMatch =
+              yearFilters.length === 0 ||
+              yearFilters.some((filter) => {
+                switch (filter) {
+                  case '2015':
+                    return cardYear >= 2015
+                  case '2010-2014':
+                    return cardYear >= 2010 && cardYear <= 2014
+                  case '2005-2009':
+                    return cardYear >= 2005 && cardYear <= 2009
+                  case 'before-2005':
+                    return cardYear < 2005
+                  default:
+                    return false
+                }
               })
+      
+            const isKmsDrivenMatch =
+              kmsDrivenFilters.length === 0 ||
+              kmsDrivenFilters.some((filter) => {
+                switch (filter) {
+                  case '0-50000':
+                    return cardKmsDriven <= 50000
+                  case '50000-100000':
+                    return cardKmsDriven > 50000 && cardKmsDriven <= 100000
+                  case '100000-150000':
+                    return cardKmsDriven > 100000 && cardKmsDriven <= 150000
+                  case 'above-150000':
+                    return cardKmsDriven > 150000
+                  default:
+                    return false
+                }
+              })
+      
+            const isFuelTypeMatch = fuelTypeFilters.length === 0 || fuelTypeFilters.includes(cardFuelType)
+            const isTransmissionMatch = transmissionFilters.length === 0 || transmissionFilters.includes(cardTransmission)
+            const isPriorityMatch = priorityFilters.length === 0 || priorityFilters.includes(cardPriority)
+      
+            if (isBudgetMatch && isBrandMatch && isPremiumBrandMatch && isRatingMatch && isYearMatch && isKmsDrivenMatch && isFuelTypeMatch && isTransmissionMatch && isPriorityMatch) {
+              card.style.display = 'block'
+              visibleCardCount++
+            } else {
+              card.style.display = 'none'
             }
-          }
+          })
       
-          // Fuel Type filter
-          if (showCard) {
-            const fuelType = card.getAttribute('data-fuel-type')
-            const fuelTypeFilters = formData.getAll('fuel-type')
-            if (fuelTypeFilters.length > 0) {
-              showCard = fuelTypeFilters.includes(fuelType)
-            }
-          }
+          noResults.style.display = visibleCardCount === 0 ? 'block' : 'none'
+        })
       
-          // Transmission filter
-          if (showCard) {
-            const transmission = card.getAttribute('data-transmission')
-            const transmissionFilters = formData.getAll('transmission')
-            if (transmissionFilters.length > 0) {
-              showCard = transmissionFilters.includes(transmission)
-            }
-          }
-      
-          // Priorities filter
-          if (showCard) {
-            const priorityFilters = formData.getAll('priority')
-            // Add any logic for priority filtering if needed
-          }
-      
-          // Show or hide card based on filters
-          card.style.display = showCard ? 'block' : 'none'
-          if (showCard) visibleCardCount++
-        }
-      
-        // Display no results message if no cards are visible
-        const noResultsMessage = document.getElementById('no-results')
-        noResultsMessage.style.display = visibleCardCount === 0 ? 'block' : 'none'
-      }
-      
-      // Add event listeners to filter checkboxes and radio buttons
-      const filtersForm = document.getElementById('filters-form')
-      filtersForm.addEventListener('change', filterVehicles)
-      
-      // Initial call to display correct results on page load
-      window.onload = filterVehicles
+        // Initial trigger to apply filters on page load
+        form.dispatchEvent(new Event('change'))
+      })
     </script>
   </body>
 </html>
